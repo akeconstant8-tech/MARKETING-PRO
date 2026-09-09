@@ -1,0 +1,19 @@
+.coming-soon {
+  background: var(--color-white);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 40px;
+  text-align: center;
+}
+
+.coming-soon h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.coming-soon p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}

@@ -1,0 +1,142 @@
+.btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 240ms var(--ease-premium), box-shadow 240ms var(--ease-premium), opacity var(--transition-fast),
+    background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.btn svg {
+  transition: transform 220ms var(--ease-premium);
+}
+
+.btn:hover:not(:disabled) svg {
+  transform: translateX(2px);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Diagonal shine — reserved for the two "hero" variants so it reads as a
+   deliberate premium accent rather than noise on every button in the app. */
+.btn-primary::after,
+.btn-gradient::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, 0.4) 50%, transparent 68%);
+  transform: translateX(-130%) skewX(-12deg);
+  pointer-events: none;
+}
+
+.btn-primary:hover:not(:disabled)::after,
+.btn-gradient:hover:not(:disabled)::after {
+  animation: sweepShine 650ms ease;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.btn-primary:hover:not(:disabled) {
+  box-shadow: var(--shadow-glow-primary);
+  transform: translateY(-2px);
+}
+
+.btn-gradient {
+  height: 50px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--color-accent), var(--color-primary));
+  background-size: 160% 100%;
+  background-position: 0% 0%;
+  color: #fff;
+  transition: transform 240ms var(--ease-premium), box-shadow 240ms var(--ease-premium), background-position 420ms ease;
+}
+
+.btn-gradient:hover:not(:disabled) {
+  box-shadow: var(--shadow-glow-accent);
+  transform: translateY(-2px);
+  background-position: 100% 0%;
+}
+
+/* Secondary variants: sober, no glow/shine — a small lift and border/shadow
+   change only, so the hero buttons stay the visual focal point. */
+.btn-outline {
+  background: var(--color-white);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.btn-outline:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-primary-light);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: rgba(15, 28, 46, 0.06);
+}
+
+.btn-danger {
+  background: var(--color-white);
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: rgba(220, 38, 38, 0.06);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  animation: spin 0.7s linear infinite;
+}
+
+.btn-outline .btn-spinner,
+.btn-ghost .btn-spinner {
+  border-color: rgba(15, 28, 46, 0.2);
+  border-top-color: var(--color-primary);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Placed last so it wins the cascade tie against the :hover rules above —
+   the click-down scale should read as a distinct press, not blend with the
+   hover lift into a mushy combined transform. */
+.btn:active:not(:disabled) {
+  transform: scale(0.96);
+  box-shadow: none;
+  transition-duration: 100ms;
+}

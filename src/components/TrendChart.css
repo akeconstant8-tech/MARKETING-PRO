@@ -1,0 +1,53 @@
+.trend-wrap {
+  position: relative;
+}
+
+.trend-svg {
+  display: block;
+  overflow: visible;
+}
+
+.trend-area {
+  animation: fadeIn 600ms ease both;
+}
+
+.trend-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: trend-draw 1100ms var(--ease-premium) both;
+}
+
+@keyframes trend-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.trend-dot {
+  animation: scaleIn 300ms ease both;
+  animation-delay: 900ms;
+}
+
+.trend-x-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding: 0 4px;
+}
+
+.trend-x-labels span {
+  font-size: 10.5px;
+  color: var(--color-text-secondary);
+}
+
+.trend-empty {
+  position: absolute;
+  inset: 0;
+  bottom: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12.5px;
+  color: var(--color-text-secondary);
+  background: linear-gradient(180deg, transparent, var(--color-white) 85%);
+}

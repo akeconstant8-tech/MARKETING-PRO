@@ -1,0 +1,206 @@
+.evaluations-page {
+  max-width: 1100px;
+}
+
+.evaluations-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.evaluations-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.evaluations-header-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.evaluations-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.evaluations-subtitle {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.evaluations-empty {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.evaluations-form {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.evaluations-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.evaluations-field {
+  margin-bottom: 14px;
+}
+
+.evaluations-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+
+.evaluations-input {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--color-text);
+  font-size: 14px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.evaluations-input:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
+}
+
+.evaluations-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.evaluations-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.evaluations-table-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.evaluations-table-scroll {
+  overflow-x: auto;
+}
+
+.evaluations-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.evaluations-table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text-secondary);
+  background: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.evaluations-table th:first-child {
+  border-top-left-radius: var(--radius-sm);
+  border-bottom-left-radius: var(--radius-sm);
+}
+
+.evaluations-table th:last-child {
+  border-top-right-radius: var(--radius-sm);
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+.evaluations-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+  vertical-align: middle;
+}
+
+.evaluations-table tbody tr:hover {
+  background: var(--color-background);
+}
+
+.evaluations-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.evaluations-table-name {
+  font-weight: 600;
+}
+
+.evaluations-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  color: #fff;
+}
+
+.evaluations-badge-blue { background: #2563eb; }
+.evaluations-badge-green { background: #16a34a; }
+.evaluations-badge-purple { background: #9333ea; }
+.evaluations-badge-orange { background: #ea580c; }
+.evaluations-badge-teal { background: #0891b2; }
+.evaluations-badge-indigo { background: #4f46e5; }
+.evaluations-badge-red { background: #dc2626; }
+
+.evaluations-table-action {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--color-background);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.evaluations-table-action:hover {
+  color: var(--color-danger);
+  background: rgba(220, 38, 38, 0.08);
+}
+
+@media (max-width: 560px) {
+  .evaluations-form-row {
+    grid-template-columns: 1fr;
+  }
+}

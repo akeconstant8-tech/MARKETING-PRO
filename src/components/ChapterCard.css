@@ -1,0 +1,217 @@
+.chapter-card {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color 220ms var(--ease-premium), box-shadow 220ms var(--ease-premium);
+}
+
+.chapter-card:hover {
+  border-color: var(--color-primary-light);
+  box-shadow: var(--shadow-md);
+}
+
+.chapter-card-photo {
+  position: relative;
+  height: 90px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.chapter-card-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6, 12, 22, 0.15) 0%, rgba(6, 12, 22, 0.55) 100%);
+}
+
+.chapter-card-photo-blue {
+  background-image: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+
+.chapter-card-photo-green {
+  background-image: linear-gradient(135deg, #16a34a, #15803d);
+}
+
+.chapter-card-photo-purple {
+  background-image: linear-gradient(135deg, #9333ea, #7e22ce);
+}
+
+.chapter-card-photo-orange {
+  background-image: linear-gradient(135deg, #ea580c, #c2410c);
+}
+
+.chapter-card-photo-teal {
+  background-image: linear-gradient(135deg, #0891b2, #0e7490);
+}
+
+.chapter-card-photo-indigo {
+  background-image: linear-gradient(135deg, #4f46e5, #4338ca);
+}
+
+.chapter-card-photo-red {
+  background-image: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+
+.chapter-card-icon {
+  position: relative;
+  z-index: 1;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.chapter-card-icon-blue {
+  color: #2563eb;
+}
+
+.chapter-card-icon-green {
+  color: #16a34a;
+}
+
+.chapter-card-icon-purple {
+  color: #9333ea;
+}
+
+.chapter-card-icon-orange {
+  color: #ea580c;
+}
+
+.chapter-card-icon-teal {
+  color: #0891b2;
+}
+
+.chapter-card-icon-indigo {
+  color: #4f46e5;
+}
+
+.chapter-card-icon-red {
+  color: #dc2626;
+}
+
+.chapter-card-viewed {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(22, 163, 74, 0.85);
+  border-radius: var(--radius-pill);
+  padding: 3px 8px;
+}
+
+.chapter-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px;
+  flex: 1;
+}
+
+.chapter-card-kind {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-accent);
+}
+
+.chapter-card-kind-blue {
+  color: #2563eb;
+}
+
+.chapter-card-kind-green {
+  color: #16a34a;
+}
+
+.chapter-card-kind-purple {
+  color: #9333ea;
+}
+
+.chapter-card-kind-orange {
+  color: #ea580c;
+}
+
+.chapter-card-kind-teal {
+  color: #0891b2;
+}
+
+.chapter-card-kind-indigo {
+  color: #4f46e5;
+}
+
+.chapter-card-kind-red {
+  color: #dc2626;
+}
+
+.chapter-card-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.35;
+  flex: 1;
+}
+
+.chapter-card-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-top: 4px;
+  background: var(--color-primary);
+  transition: transform 200ms var(--ease-premium), box-shadow 200ms var(--ease-premium);
+}
+
+.chapter-card-link:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.chapter-card-link-blue {
+  background: #2563eb;
+}
+
+.chapter-card-link-green {
+  background: #16a34a;
+}
+
+.chapter-card-link-purple {
+  background: #9333ea;
+}
+
+.chapter-card-link-orange {
+  background: #ea580c;
+}
+
+.chapter-card-link-teal {
+  background: #0891b2;
+}
+
+.chapter-card-link-indigo {
+  background: #4f46e5;
+}
+
+.chapter-card-link-red {
+  background: #dc2626;
+}

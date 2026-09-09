@@ -1,0 +1,168 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: var(--header-height);
+  padding: 0 24px;
+  background: var(--color-white);
+  opacity: 0.97;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  transition: box-shadow var(--transition-base), background var(--transition-base);
+}
+
+.header-scrolled {
+  box-shadow: var(--shadow-sm);
+}
+
+.header-menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text);
+  flex-shrink: 0;
+  transition: background var(--transition-fast);
+}
+
+.header-menu-btn:hover {
+  background: rgba(15, 28, 46, 0.06);
+}
+
+.header-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text);
+  flex: 1;
+}
+
+.header-logo {
+  display: none;
+}
+
+.header-bell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.header-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  padding: 4px 6px 4px 4px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--transition-fast);
+}
+
+.header-profile:hover {
+  background: rgba(15, 28, 46, 0.05);
+}
+
+.header-profile-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: transform 220ms var(--ease-premium), box-shadow 220ms var(--ease-premium);
+}
+
+.header-profile:hover .header-profile-avatar {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 3px rgba(212, 167, 44, 0.3);
+}
+
+.header-profile:active .header-profile-avatar {
+  transform: scale(0.96);
+}
+
+.header-profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.header-profile-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-profile-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
+.header-profile-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-success);
+  flex-shrink: 0;
+}
+
+.header-profile-chevron {
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+/* Phone (0-767px): sidebar (and its logo) is off-canvas, so the header
+   carries the logo instead, centered, in place of the page title. */
+@media (max-width: 767px) {
+  .header {
+    padding: 0 16px;
+  }
+
+  .header-title {
+    display: none;
+  }
+
+  .header-logo {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .header-bell,
+  .header-profile-info,
+  .header-profile-chevron {
+    display: none;
+  }
+
+  .header-profile {
+    padding: 0;
+  }
+}

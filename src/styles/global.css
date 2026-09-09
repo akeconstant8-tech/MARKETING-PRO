@@ -1,0 +1,165 @@
+@import './variables.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--color-background);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 14px;
+}
+
+/* iOS Safari auto-zooms the page on focus for any input under 16px — an
+   inconsistent scroll-and-zoom jolt on every field tap. Bumping to 16px only
+   below the phone/tablet breakpoint keeps the compact 14px look on desktop. */
+@media (max-width: 1023px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-pill);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes softPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Diagonal light sweep used across cards/buttons on hover — one shared
+   keyframe so the "premium shine" motif reads as consistent everywhere. */
+@keyframes sweepShine {
+  from {
+    transform: translateX(-130%) skewX(-12deg);
+  }
+  to {
+    transform: translateX(220%) skewX(-12deg);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp var(--transition-base) both;
+}
+
+.fade-in {
+  animation: fadeIn var(--transition-base) both;
+}
+
+.scale-in {
+  animation: scaleIn var(--transition-base) both;
+}
+
+.slide-in-right {
+  animation: slideInRight var(--transition-base) both;
+}
+
+/* Respect the user's OS-level motion preference across the whole app,
+   rather than opting each component in individually. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

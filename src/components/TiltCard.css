@@ -1,0 +1,25 @@
+.tilt-card {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  cursor: default;
+}
+
+.tilt-card-inner {
+  position: relative;
+  height: 100%;
+}
+
+.tilt-card-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
+.tilt-card:hover .tilt-card-glare {
+  opacity: 1;
+}

@@ -1,0 +1,11 @@
+.route-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  color: var(--color-primary);
+}
+
+.route-loader-spin {
+  animation: spin 0.9s linear infinite;
+}

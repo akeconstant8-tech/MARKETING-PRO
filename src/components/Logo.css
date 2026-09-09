@@ -1,0 +1,81 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  border-radius: var(--radius-md);
+}
+
+.logo-small .logo-badge {
+  width: 34px;
+  height: 34px;
+}
+
+.logo-medium .logo-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+}
+
+.logo-text-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-wordmark {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.logo-small .logo-wordmark {
+  font-size: 16px;
+}
+
+.logo-medium .logo-wordmark {
+  font-size: 19px;
+}
+
+.logo-accent {
+  color: var(--color-accent);
+}
+
+.logo-tagline {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+.logo-small .logo-tagline {
+  font-size: 8px;
+}
+
+.logo-medium .logo-tagline {
+  font-size: 9px;
+}
+
+.logo-image {
+  display: block;
+  object-fit: contain;
+  width: auto;
+}
+
+.logo-image-large {
+  height: 160px;
+  max-width: 260px;
+}
+
+.logo-image-medium {
+  height: 48px;
+  max-width: 180px;
+}
+
+.logo-image-small {
+  height: 34px;
+  max-width: 160px;
+}

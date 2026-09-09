@@ -1,0 +1,12 @@
+rules_version = '2';
+
+// Meme principe que firestore.rules : chaque professeur n'accede qu'a ses
+// propres fichiers. A deployer via `firebase deploy --only storage` une fois
+// Firebase Storage active dans la console (Build > Storage > Commencer).
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /courses/{teacherId}/{allPaths=**} {
+      allow read, write: if request.auth != null && request.auth.uid == teacherId;
+    }
+  }
+}

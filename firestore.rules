@@ -1,0 +1,63 @@
+rules_version = '2';
+
+// Chaque professeur ne doit accéder qu'à ses propres données (cahier des
+// charges section 23). A déployer via `firebase deploy --only firestore:rules`
+// une fois le projet Firebase créé.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /teachers/{teacherId} {
+      allow read, update: if request.auth != null && request.auth.uid == teacherId;
+      allow create: if request.auth != null && request.auth.uid == teacherId
+        && request.resource.data.id == teacherId;
+    }
+
+    function isOwner() {
+      return request.auth != null && resource.data.teacherId == request.auth.uid;
+    }
+
+    function isOwnerOnCreate() {
+      return request.auth != null && request.resource.data.teacherId == request.auth.uid;
+    }
+
+    match /students/{id} {
+      allow read, update, delete: if isOwner();
+      allow create: if isOwnerOnCreate();
+    }
+    match /classes/{id} {
+      allow read, update, delete: if isOwner();
+      allow create: if isOwnerOnCreate();
+    }
+    match /filieres/{id} {
+      allow read, update, delete: if isOwner();
+      allow create: if isOwnerOnCreate();
+    }
+    match /subjects/{id} {
+      allow read, update, delete: if isOwner();
+      allow create: if isOwnerOnCreate();
+    }
+    match /courses/{id} {
+      allow read, update, delete: if isOwner();
+      allow create: if isOwnerOnCreate();
+    }
+    match /evaluations/{id} {
+      allow read, update, delete: if isOwner();
+      allow create: if isOwnerOnCreate();
+    }
+    match /grades/{id} {
+      allow read, update, delete: if isOwner();
+      allow create: if isOwnerOnCreate();
+    }
+    match /scheduleEntries/{id} {
+      allow read, update, delete: if isOwner();
+      allow create: if isOwnerOnCreate();
+    }
+    match /calendarEvents/{id} {
+      allow read, update, delete: if isOwner();
+      allow create: if isOwnerOnCreate();
+    }
+    match /contacts/{id} {
+      allow read, update, delete: if isOwner();
+      allow create: if isOwnerOnCreate();
+    }
+  }
+}
