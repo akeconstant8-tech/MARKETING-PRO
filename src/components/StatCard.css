@@ -1,7 +1,7 @@
 .stat-card {
   position: relative;
   overflow: hidden;
-  background: var(--color-white);
+  background: var(--card-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 18px;
@@ -101,6 +101,24 @@
 
 .stat-card:hover .stat-icon {
   transform: scale(1.12) rotate(-6deg);
+}
+
+/* Tone-matched glow on hover only — a colored halo the rest of the time
+   would fight the card's own shadow and read as noisy across a whole grid. */
+.stat-card:hover .stat-icon-blue {
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+}
+
+.stat-card:hover .stat-icon-green {
+  box-shadow: 0 6px 16px rgba(22, 163, 74, 0.3);
+}
+
+.stat-card:hover .stat-icon-purple {
+  box-shadow: 0 6px 16px rgba(147, 51, 234, 0.3);
+}
+
+.stat-card:hover .stat-icon-orange {
+  box-shadow: 0 6px 16px rgba(234, 88, 12, 0.3);
 }
 
 .stat-card-accent {

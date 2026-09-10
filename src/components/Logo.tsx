@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'framer-motion';
 import './Logo.css';
 
 // marketing-pro.png is the full brand lockup (icon + wordmark + tagline
@@ -24,12 +25,29 @@ interface Props {
 }
 
 export default function Logo({ size = 'large' }: Props) {
+  const reducedMotion = useReducedMotion();
+  const entrance = reducedMotion
+    ? {}
+    : {
+        initial: { opacity: 0, scale: 0.95 },
+        animate: { opacity: 1, scale: 1 },
+        transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
+      };
+
   if (size === 'large' && lockupSrc) {
-    return <img src={lockupSrc} alt="MarketingPro" className="logo-image logo-image-large" loading="eager" />;
+    return (
+      <motion.img
+        src={lockupSrc}
+        alt="MarketingPro"
+        className="logo-image logo-image-large"
+        loading="eager"
+        {...entrance}
+      />
+    );
   }
 
   return (
-    <div className={`logo logo-${size}`}>
+    <motion.div className={`logo logo-${size}`} {...entrance}>
       {iconSrc ? (
         <img src={iconSrc} alt="MarketingPro" className={`logo-image logo-image-${size}`} loading="eager" />
       ) : (
@@ -41,6 +59,6 @@ export default function Logo({ size = 'large' }: Props) {
         </span>
         <span className="logo-tagline">ENSEIGNER · GÉRER · RÉUSSIR</span>
       </span>
-    </div>
+    </motion.div>
   );
 }

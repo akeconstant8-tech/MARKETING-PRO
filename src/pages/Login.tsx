@@ -21,6 +21,11 @@ import {
 } from 'lucide-react';
 import Logo from '../components/Logo';
 import Button from '../components/Button';
+import BlurText from '../components/effects/BlurText';
+import ShinyText from '../components/effects/ShinyText';
+import { AnimatedList, AnimatedListItem } from '../components/effects/AnimatedList';
+import MagnetButton from '../components/effects/MagnetButton';
+import ClickSpark from '../components/effects/ClickSpark';
 import { resetPassword, signInWithEmail, signInWithGoogle } from '../services/authService';
 import { useToast } from '../context/ToastContext';
 import { useTheme } from '../hooks/useTheme';
@@ -138,41 +143,69 @@ export default function Login() {
               exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -16 }}
               transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
             >
-              <span className="hero-badge">
+              <motion.span
+                className="hero-badge"
+                initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={reducedMotion ? undefined : { y: -2 }}
+              >
                 <GraduationCap size={14} />
                 La plateforme dédiée aux professeurs de Marketing
-              </span>
-              <p className="hero-welcome">Bienvenue Professeur 👋</p>
+              </motion.span>
+              <BlurText text="Bienvenue Professeur 👋" className="hero-welcome" delay={0.3} as="p" />
               <h1 className="hero-title">
-                Transformez votre enseignement du <span className="hero-accent">Marketing</span>
+                <BlurText text="Transformez votre enseignement du" delay={0.45} />{' '}
+                <ShinyText className="hero-accent">Marketing</ShinyText>
               </h1>
-              <p className="hero-sub">
+              <motion.p
+                className="hero-sub"
+                initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
+              >
                 Une solution complète, moderne et intuitive pour gérer vos cours, vos notes et accompagner vos
                 étudiants vers la réussite.
-              </p>
+              </motion.p>
 
-              <ul className="hero-features">
+              <AnimatedList className="hero-features">
                 {features.map((f) => (
-                  <li key={f.label}>
+                  <AnimatedListItem key={f.label}>
                     <span className="hero-feature-icon">
                       <f.icon size={18} />
                     </span>
                     {f.label}
-                  </li>
+                  </AnimatedListItem>
                 ))}
-              </ul>
+              </AnimatedList>
 
               <div className="hero-cta">
-                <button className="btn btn-gradient" onClick={openLogin}>
-                  Se connecter
-                  <ArrowRight size={18} />
-                </button>
+                <ClickSpark>
+                  <MagnetButton>
+                    <button className="btn btn-gradient" onClick={openLogin}>
+                      Se connecter
+                      <ArrowRight size={18} />
+                    </button>
+                  </MagnetButton>
+                </ClickSpark>
               </div>
 
-              <p className="hero-pricing-note">
-                <Sparkles size={14} />
+              <motion.p
+                className="hero-pricing-note"
+                initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <motion.span
+                  style={{ display: 'inline-flex' }}
+                  initial={reducedMotion ? { scale: 1 } : { scale: 0.7 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.4, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <Sparkles size={14} />
+                </motion.span>
                 100&nbsp;% gratuit pour les enseignants.
-              </p>
+              </motion.p>
 
               <div className="hero-stats">
                 {stats.map((s) => (

@@ -1,5 +1,6 @@
 .grades-page {
   max-width: 1000px;
+  margin: 0 auto;
 }
 
 .grades-header {
@@ -47,7 +48,7 @@
 }
 
 .grades-selector-card {
-  background: var(--color-white);
+  background: var(--card-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 18px 20px;
@@ -81,7 +82,7 @@
 
 .grades-summary-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
   gap: 14px;
   margin-bottom: 20px;
 }
@@ -90,7 +91,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--color-white);
+  background: var(--card-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 14px 16px;
@@ -114,7 +115,7 @@
 }
 
 .grades-table-card {
-  background: var(--color-white);
+  background: var(--card-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 16px;

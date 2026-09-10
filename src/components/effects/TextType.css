@@ -1,0 +1,29 @@
+.text-type {
+  display: inline;
+}
+
+.text-type__content {
+  white-space: pre-wrap;
+}
+
+.text-type__cursor {
+  display: inline-block;
+  margin-left: 1px;
+  animation: text-type-blink 0.85s step-end infinite;
+}
+
+.text-type__cursor--hidden {
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes text-type-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}

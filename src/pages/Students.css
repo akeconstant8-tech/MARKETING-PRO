@@ -1,5 +1,6 @@
 .students-page {
   max-width: 1100px;
+  margin: 0 auto;
 }
 
 .students-header {
@@ -27,18 +28,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 8px 20px rgba(15, 28, 46, 0.3);
+  animation: scaleIn 550ms var(--ease-premium) both;
 }
 
 .students-title {
   font-size: 20px;
   font-weight: 700;
   color: var(--color-text);
+  animation: fadeInUp 450ms var(--ease-premium) 80ms both;
 }
 
 .students-subtitle {
   margin-top: 4px;
   font-size: 13px;
   color: var(--color-text-secondary);
+  animation: fadeInUp 450ms var(--ease-premium) 140ms both;
 }
 
 .students-empty {
@@ -47,7 +52,7 @@
 }
 
 .students-form {
-  background: var(--color-white);
+  background: var(--card-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 20px;
@@ -99,7 +104,7 @@
 
 .students-stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
   gap: 14px;
   margin-bottom: 20px;
 }
@@ -147,7 +152,7 @@
 }
 
 .students-table-card {
-  background: var(--color-white);
+  background: var(--card-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 16px;

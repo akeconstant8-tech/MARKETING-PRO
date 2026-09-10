@@ -17,9 +17,14 @@
   --radius-lg: 16px;
   --radius-pill: 999px;
 
-  --shadow-sm: 0 1px 3px rgba(15, 28, 46, 0.06);
-  --shadow-md: 0 4px 12px rgba(15, 28, 46, 0.08);
-  --shadow-lg: 0 12px 32px rgba(15, 28, 46, 0.12);
+  --shadow-sm: 0 2px 6px rgba(15, 28, 46, 0.07);
+  --shadow-md: 0 8px 20px rgba(15, 28, 46, 0.10);
+  --shadow-lg: 0 22px 50px rgba(15, 28, 46, 0.16);
+
+  /* Barely-there gradient (rather than flat white) so every card reads with
+     a touch more depth — resolves to the equivalent dark-teal tones in dark
+     mode automatically since it's built from the two theme tokens. */
+  --card-surface: linear-gradient(180deg, var(--color-white) 0%, var(--color-background) 100%);
 
   --space-xs: 4px;
   --space-sm: 8px;
@@ -61,7 +66,7 @@
   --color-text: #f2f5f4;
   --color-text-secondary: #9db3b0;
   --color-border: #1f3532;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.32);
+  --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.38);
+  --shadow-lg: 0 22px 50px rgba(0, 0, 0, 0.46);
 }

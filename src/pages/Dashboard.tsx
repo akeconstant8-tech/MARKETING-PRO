@@ -23,6 +23,7 @@ import { useCohortStats } from '../hooks/useCohortStats';
 import { useRecentActivity } from '../hooks/useRecentActivity';
 import { useViewedChapters } from '../hooks/useViewedChapters';
 import SearchBar from '../components/SearchBar';
+import BlurText from '../components/effects/BlurText';
 import StatCard from '../components/StatCard';
 import Skeleton from '../components/Skeleton';
 import TiltCard from '../components/TiltCard';
@@ -213,7 +214,7 @@ export default function Dashboard() {
     <div className="dashboard fade-in-up">
       <div className="dashboard-header">
         <div>
-          <h2 className="dashboard-greeting">Tableau de bord 👋</h2>
+          <BlurText text="Tableau de bord 👋" className="dashboard-greeting" as="h2" />
           <p className="dashboard-subtitle">
             Bienvenue sur Marketing Pro. Gerez facilement votre enseignement.
           </p>
@@ -306,10 +307,11 @@ export default function Dashboard() {
       </div>
 
       <div className="dashboard-quick-actions">
-        {QUICK_ACTIONS.map((action) => (
+        {QUICK_ACTIONS.map((action, i) => (
           <button
             key={action.label}
-            className={`dashboard-quick-action dashboard-quick-action-${action.tone}`}
+            className={`dashboard-quick-action dashboard-quick-action-${action.tone} fade-in-up`}
+            style={{ '--stagger-index': i } as CSSProperties}
             onClick={() => navigate(action.to)}
           >
             <action.icon size={17} />
