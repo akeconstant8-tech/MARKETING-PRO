@@ -71,6 +71,7 @@
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
+  max-width: 100%;
   background: var(--color-white);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
@@ -107,6 +108,7 @@
   display: flex;
   flex-direction: column;
   gap: 1px;
+  min-width: 0;
 }
 
 .expertise-pill-name {
@@ -114,6 +116,8 @@
   font-weight: 700;
   color: var(--color-text);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .expertise-pill-domain {
@@ -295,4 +299,113 @@
 
 .settings-row:has(.settings-toggle-thumb-on) .settings-toggle {
   background: var(--color-primary);
+}
+
+/* --- Mes etablissements --- */
+
+.etab-list {
+  list-style: none;
+  margin: 14px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.etab-list-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.etab-select-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-background);
+  color: var(--color-text);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.etab-select-btn span {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.etab-select-btn:hover {
+  border-color: var(--color-primary-light);
+}
+
+.etab-select-btn-active {
+  background: rgba(30, 58, 95, 0.08);
+  border-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.etab-select-btn-active svg:first-child {
+  color: var(--color-primary);
+}
+
+.etab-select-btn svg:last-child {
+  color: var(--color-success);
+  flex-shrink: 0;
+}
+
+.etab-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--color-background);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.etab-icon-btn:hover {
+  color: var(--color-primary);
+  background: rgba(15, 28, 46, 0.08);
+}
+
+.etab-icon-btn-danger:hover {
+  color: var(--color-danger);
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.etab-edit-input {
+  flex: 1;
+  height: 42px;
+  padding: 0 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--color-text);
+  font-size: 13.5px;
+}
+
+.etab-edit-input:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
+}
+
+.etab-create-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
 }

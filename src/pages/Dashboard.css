@@ -269,11 +269,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 16px;
 }
 
 .dashboard-panel-header .dashboard-section-title {
   margin-bottom: 0;
+  min-width: 0;
 }
 
 .dashboard-panel-link {
@@ -513,6 +516,7 @@
   color: var(--color-text);
   font-size: 12.5px;
   width: 200px;
+  max-width: 100%;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 

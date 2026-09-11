@@ -1,0 +1,48 @@
+/* Tone-colored side panel — no per-course photo exists, so this mirrors
+   ChapterCard's fallback gradients (same tone = same color as the card that
+   opened this reader) instead of a generic/fake background. */
+.course-reader-side-blue { background: linear-gradient(160deg, #2563eb, #1d4ed8); }
+.course-reader-side-green { background: linear-gradient(160deg, #16a34a, #15803d); }
+.course-reader-side-purple { background: linear-gradient(160deg, #9333ea, #7e22ce); }
+.course-reader-side-orange { background: linear-gradient(160deg, #ea580c, #c2410c); }
+.course-reader-side-teal { background: linear-gradient(160deg, #0891b2, #0e7490); }
+.course-reader-side-indigo { background: linear-gradient(160deg, #4f46e5, #4338ca); }
+.course-reader-side-red { background: linear-gradient(160deg, #dc2626, #b91c1c); }
+
+.course-reader-empty {
+  font-size: 13.5px;
+  color: var(--color-text-secondary);
+  background: var(--color-background);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-top: 8px;
+}
+
+.course-reader-attachments {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.course-reader-attachments button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--color-primary-light);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.course-reader-attachments button:hover {
+  border-color: var(--color-primary-light);
+  color: var(--color-primary);
+}

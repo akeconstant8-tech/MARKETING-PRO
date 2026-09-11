@@ -17,6 +17,7 @@ import {
   GraduationCap,
   ChevronRight,
   X,
+  Printer,
 } from 'lucide-react';
 import Logo from './Logo';
 import { useAuth } from '../context/AuthContext';
@@ -31,6 +32,7 @@ const navItems = [
   { to: '/courses', label: 'Cours', icon: NotebookText },
   { to: '/evaluations', label: 'Evaluations', icon: ClipboardList },
   { to: '/grades', label: 'Notes', icon: PenSquare },
+  { to: '/print', label: 'Imprimer', icon: Printer },
   { to: '/performance', label: 'Statistiques', icon: BarChart3 },
   { to: '/resources', label: 'Ressources', icon: FolderOpen },
   { to: '/calendar', label: 'Calendrier', icon: CalendarDays },

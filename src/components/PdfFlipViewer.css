@@ -59,13 +59,13 @@
 
 .pdf-viewer-stage {
   flex: 1;
-  min-height: 400px;
+  min-height: min(400px, 55vh);
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--color-background);
   padding: 24px;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .pdf-viewer-loading,

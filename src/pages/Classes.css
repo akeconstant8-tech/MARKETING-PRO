@@ -177,6 +177,27 @@
   justify-content: center;
 }
 
+.class-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.class-card-edit {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.class-card-edit:hover {
+  color: var(--color-primary);
+  background: rgba(15, 28, 46, 0.08);
+}
+
 .class-card-delete {
   background: none;
   border: none;
@@ -225,4 +246,149 @@
   .classes-form-row {
     grid-template-columns: 1fr;
   }
+}
+
+.class-card-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.class-card-edit-input {
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--color-text);
+  font-size: 13px;
+}
+
+.class-card-edit-input:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+}
+
+.class-card-edit-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.class-card-edit-confirm,
+.class-card-edit-cancel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.class-card-edit-confirm {
+  background: rgba(22, 163, 74, 0.12);
+  color: var(--color-success);
+}
+
+.class-card-edit-confirm:hover {
+  background: rgba(22, 163, 74, 0.2);
+}
+
+.class-card-edit-cancel {
+  background: var(--color-background);
+  color: var(--color-text-secondary);
+}
+
+.class-card-edit-cancel:hover {
+  background: rgba(220, 38, 38, 0.08);
+  color: var(--color-danger);
+}
+
+/* --- Groupes preconfigures --- */
+
+.classes-presets-card {
+  background: var(--card-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.classes-presets-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-accent);
+}
+
+.classes-presets-header h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.classes-presets-hint {
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: var(--color-text-secondary);
+}
+
+.classes-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.classes-preset-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-background);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color var(--transition-fast), transform 200ms var(--ease-premium), box-shadow 200ms var(--ease-premium);
+}
+
+.classes-preset-btn:hover:not(:disabled) {
+  border-color: var(--color-primary-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.classes-preset-btn:disabled {
+  cursor: default;
+}
+
+.classes-preset-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.classes-preset-niveau {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.classes-preset-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--color-primary-light);
+}
+
+.classes-preset-btn-done .classes-preset-status {
+  color: var(--color-success);
 }

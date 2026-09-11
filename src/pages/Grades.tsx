@@ -1,28 +1,21 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { CheckCircle2, PenSquare, Save, Users } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useTeacherCollection } from '../hooks/useTeacherCollection';
 import { addTeacherDoc, updateTeacherDoc } from '../services/dataService';
+import { useEstablishment } from '../context/EstablishmentContext';
 import { computeSimpleAverage } from '../utils/calculations';
+import { EVALUATION_TYPE_LABELS } from '../data/evaluationTypes';
 import Button from '../components/Button';
 import Skeleton from '../components/Skeleton';
-import type { Class, Evaluation, EvaluationType, Grade, Student, Subject } from '../types';
+import type { Class, Evaluation, Grade, Student, Subject } from '../types';
 import './Grades.css';
-
-const TYPE_LABELS: Record<EvaluationType, string> = {
-  devoir: 'Devoir',
-  interrogation: 'Interrogation',
-  examen: 'Examen',
-  controle_continu: 'Controle continu',
-  projet: 'Projet',
-  expose: 'Expose',
-  etude_de_cas: 'Etude de cas',
-};
 
 export default function Grades() {
   const { user } = useAuth();
   const { showToast } = useToast();
+  const { activeId: activeEtablissementId } = useEstablishment();
   const { items: evaluations, loading: loadingEvaluations } = useTeacherCollection<Evaluation>('evaluations', 'date');
   const { items: subjects, loading: loadingSubjects } = useTeacherCollection<Subject>('subjects', 'nom');
   const { items: classes, loading: loadingClasses } = useTeacherCollection<Class>('classes', 'nom');
@@ -98,6 +91,7 @@ export default function Grades() {
         } else {
           await addTeacherDoc('grades', {
             teacherId: user.uid,
+            etablissementId: activeEtablissementId ?? null,
             studentId: student.id,
             subjectId: selectedEvaluation.subjectId,
             evaluationId: selectedEvaluation.id,
@@ -157,7 +151,7 @@ export default function Grades() {
               return (
                 <option key={e.id} value={e.id}>
                   {subject?.nom ?? 'Matiere inconnue'} · {classe?.niveau ?? classe?.nom ?? '—'} ·{' '}
-                  {TYPE_LABELS[e.type]} · {e.date}
+                  {EVALUATION_TYPE_LABELS[e.type]} · {e.date}
                 </option>
               );
             })}
@@ -215,8 +209,8 @@ export default function Grades() {
                     </tr>
                   </thead>
                   <tbody>
-                    {classStudents.map((student) => (
-                      <tr key={student.id}>
+                    {classStudents.map((student, i) => (
+                      <tr key={student.id} className="row-fade-in" style={{ '--stagger-index': Math.min(i, 14) } as CSSProperties}>
                         <td className="grades-table-name">
                           {student.prenom} {student.nom}
                         </td>

@@ -158,6 +158,15 @@ p {
   animation: slideInRight var(--transition-base) both;
 }
 
+/* Staggered row entrance for data tables — pairs with an inline
+   `--stagger-index` custom property set per <tr> in JSX (same technique as
+   the card grids' `--stagger-index`). Index is clamped client-side so a long
+   table doesn't push its last rows several seconds out. */
+.row-fade-in {
+  animation: fadeInUp 320ms var(--ease-premium) both;
+  animation-delay: calc(var(--stagger-index, 0) * 30ms);
+}
+
 /* Respect the user's OS-level motion preference across the whole app,
    rather than opting each component in individually. */
 @media (prefers-reduced-motion: reduce) {

@@ -1,8 +1,9 @@
-import { useMemo, useState, type FormEvent } from 'react';
+import { useMemo, useState, type CSSProperties, type FormEvent } from 'react';
 import { Building2, Mail, Phone, Plus, Search, Trash2, Users } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useTeacherCollection } from '../hooks/useTeacherCollection';
+import { useEstablishment } from '../context/EstablishmentContext';
 import { addTeacherDoc, deleteTeacherDoc } from '../services/dataService';
 import Button from '../components/Button';
 import StatCard from '../components/StatCard';
@@ -13,6 +14,7 @@ import './Students.css';
 export default function Students() {
   const { user } = useAuth();
   const { showToast } = useToast();
+  const { activeId: activeEtablissementId } = useEstablishment();
   const { items: students, loading: loadingStudents } = useTeacherCollection<Student>('students', 'nom');
   const { items: classes, loading: loadingClasses } = useTeacherCollection<Class>('classes', 'nom');
   const { items: filieres, loading: loadingFilieres } = useTeacherCollection<Filiere>('filieres', 'nom');
@@ -53,6 +55,7 @@ export default function Students() {
     try {
       await addTeacherDoc('students', {
         teacherId: user.uid,
+        etablissementId: activeEtablissementId ?? null,
         nom: nom.trim(),
         prenom: prenom.trim(),
         sexe: sexe || null,
@@ -286,11 +289,11 @@ export default function Students() {
                 </tr>
               </thead>
               <tbody>
-                {filteredStudents.map((student) => {
+                {filteredStudents.map((student, i) => {
                   const classe = classById.get(student.classeId);
                   const filiere = filiereById.get(classe?.filiereId ?? '');
                   return (
-                    <tr key={student.id}>
+                    <tr key={student.id} className="row-fade-in" style={{ '--stagger-index': Math.min(i, 14) } as CSSProperties}>
                       <td>
                         <div className="students-table-name">
                           {student.prenom} {student.nom}

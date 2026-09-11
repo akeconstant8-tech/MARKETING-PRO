@@ -13,9 +13,22 @@ export interface Teacher {
   authProvider: AuthProvider;
 }
 
+/** A teacher can run several establishments from the same account; every
+ * record below carries an optional `etablissementId` so it can be scoped to
+ * one. A document with no `etablissementId` (all data created before this
+ * feature existed) stays visible regardless of which establishment is
+ * active — see useTeacherCollection.ts. */
+export interface Etablissement {
+  id: string;
+  teacherId: string;
+  nom: string;
+  createdAt?: string;
+}
+
 export interface Student {
   id: string;
   teacherId: string;
+  etablissementId?: string;
   nom: string;
   prenom: string;
   sexe?: 'M' | 'F';
@@ -33,6 +46,7 @@ export interface Student {
 export interface Class {
   id: string;
   teacherId: string;
+  etablissementId?: string;
   nom: string;
   niveau?: string;
   filiereId?: string;
@@ -43,6 +57,7 @@ export interface Class {
 export interface Filiere {
   id: string;
   teacherId: string;
+  etablissementId?: string;
   nom: string;
   createdAt?: string;
 }
@@ -50,6 +65,7 @@ export interface Filiere {
 export interface Subject {
   id: string;
   teacherId: string;
+  etablissementId?: string;
   nom: string;
   coefficient: number;
   description?: string;
@@ -69,6 +85,7 @@ export interface CourseAttachment {
 export interface Course {
   id: string;
   teacherId: string;
+  etablissementId?: string;
   titre: string;
   subjectId: string;
   classeId: string;
@@ -90,11 +107,14 @@ export type EvaluationType =
   | 'controle_continu'
   | 'projet'
   | 'expose'
-  | 'etude_de_cas';
+  | 'etude_de_cas'
+  | 'evaluation_niveau'
+  | 'bts_blanc';
 
 export interface Evaluation {
   id: string;
   teacherId: string;
+  etablissementId?: string;
   subjectId: string;
   classeId: string;
   type: EvaluationType;
@@ -106,6 +126,7 @@ export interface Evaluation {
 export interface Grade {
   id: string;
   teacherId: string;
+  etablissementId?: string;
   studentId: string;
   subjectId: string;
   evaluationId: string;

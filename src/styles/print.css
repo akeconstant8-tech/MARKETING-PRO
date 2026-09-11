@@ -1,0 +1,55 @@
+/* Print module — targets the app's existing chrome purely by selector, so
+   Sidebar.tsx/Header.tsx/Layout.tsx never need to know this feature exists. */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .sidebar,
+  .header,
+  .layout-footer,
+  .offline-banner {
+    display: none !important;
+  }
+
+  .layout-main,
+  .layout-main-collapsed {
+    margin-left: 0 !important;
+  }
+
+  .layout-content {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  body {
+    background: #fff !important;
+  }
+
+  /* Never let an in-progress entrance/hover animation (page transitions,
+     staggered card/row fade-ins, button shine, etc.) be caught mid-frame by
+     the browser's print renderer — printed output must always be fully
+     opaque and static regardless of what was animating on screen. */
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@page {
+  size: A4 portrait;
+  margin: 14mm;
+}
+
+/* Named page for wide tables (multi-evaluation summary) — Chrome/Edge honor
+   the `page` property below; browsers that don't just stay portrait. */
+@page landscape-doc {
+  size: A4 landscape;
+  margin: 12mm;
+}
+
+.print-landscape {
+  page: landscape-doc;
+}

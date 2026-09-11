@@ -147,22 +147,22 @@ export default function Login() {
                 className="hero-badge"
                 initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                 whileHover={reducedMotion ? undefined : { y: -2 }}
               >
                 <GraduationCap size={14} />
                 La plateforme dédiée aux professeurs de Marketing
               </motion.span>
-              <BlurText text="Bienvenue Professeur 👋" className="hero-welcome" delay={0.3} as="p" />
+              <BlurText text="Bienvenue Professeur 👋" className="hero-welcome" delay={0.4} as="p" />
               <h1 className="hero-title">
-                <BlurText text="Transformez votre enseignement du" delay={0.45} />{' '}
+                <BlurText text="Transformez votre enseignement du" delay={0.6} stagger={0.14} duration={0.85} blur={10} rise={16} />{' '}
                 <ShinyText className="hero-accent">Marketing</ShinyText>
               </h1>
               <motion.p
                 className="hero-sub"
                 initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.68, delay: 1.15, ease: [0.16, 1, 0.3, 1] }}
               >
                 Une solution complète, moderne et intuitive pour gérer vos cours, vos notes et accompagner vos
                 étudiants vers la réussite.
@@ -194,13 +194,13 @@ export default function Login() {
                 className="hero-pricing-note"
                 initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.68, delay: 1.5, ease: [0.16, 1, 0.3, 1] }}
               >
                 <motion.span
                   style={{ display: 'inline-flex' }}
                   initial={reducedMotion ? { scale: 1 } : { scale: 0.7 }}
                   animate={{ scale: 1 }}
-                  transition={{ duration: 0.4, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.55, delay: 1.62, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <Sparkles size={14} />
                 </motion.span>

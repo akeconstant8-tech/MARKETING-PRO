@@ -6,6 +6,9 @@ interface Props {
   className?: string;
   delay?: number;
   stagger?: number;
+  duration?: number;
+  blur?: number;
+  rise?: number;
   as?: ElementType;
 }
 
@@ -16,7 +19,16 @@ interface Props {
  * browser keeps wrapping the line normally on narrow screens. `as` defaults
  * to a plain span but should be set to the real heading/paragraph tag when
  * replacing one, so the document outline stays intact. */
-export default function BlurText({ text, className, delay = 0, stagger = 0.05, as: Tag = 'span' }: Props) {
+export default function BlurText({
+  text,
+  className,
+  delay = 0,
+  stagger = 0.08,
+  duration = 0.6,
+  blur = 4,
+  rise = 8,
+  as: Tag = 'span',
+}: Props) {
   const reducedMotion = useReducedMotion();
   const words = text.split(' ');
 
@@ -30,9 +42,9 @@ export default function BlurText({ text, className, delay = 0, stagger = 0.05, a
         <Fragment key={i}>
           <motion.span
             style={{ display: 'inline-block', willChange: 'transform, opacity, filter' }}
-            initial={{ opacity: 0, y: 8, filter: 'blur(4px)' }}
+            initial={{ opacity: 0, y: rise, filter: `blur(${blur}px)` }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.45, delay: delay + i * stagger, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration, delay: delay + i * stagger, ease: [0.16, 1, 0.3, 1] }}
           >
             {word}
           </motion.span>

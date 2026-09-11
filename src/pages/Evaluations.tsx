@@ -1,34 +1,16 @@
-import { useMemo, useState, type FormEvent } from 'react';
+import { useMemo, useState, type CSSProperties, type FormEvent } from 'react';
 import { CalendarClock, ClipboardList, Hourglass, Layers, Plus, Trash2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useTeacherCollection } from '../hooks/useTeacherCollection';
 import { addTeacherDoc, deleteTeacherDoc } from '../services/dataService';
+import { useEstablishment } from '../context/EstablishmentContext';
+import { EVALUATION_TYPE_DEFAULT_NOTE_MAX, EVALUATION_TYPE_LABELS, EVALUATION_TYPE_TONES } from '../data/evaluationTypes';
 import Button from '../components/Button';
 import StatCard from '../components/StatCard';
 import Skeleton from '../components/Skeleton';
 import type { Class, Evaluation, EvaluationType, Subject } from '../types';
 import './Evaluations.css';
-
-const TYPE_LABELS: Record<EvaluationType, string> = {
-  devoir: 'Devoir',
-  interrogation: 'Interrogation',
-  examen: 'Examen',
-  controle_continu: 'Controle continu',
-  projet: 'Projet',
-  expose: 'Expose',
-  etude_de_cas: 'Etude de cas',
-};
-
-const TYPE_TONES: Record<EvaluationType, string> = {
-  devoir: 'blue',
-  interrogation: 'orange',
-  examen: 'red',
-  controle_continu: 'purple',
-  projet: 'teal',
-  expose: 'green',
-  etude_de_cas: 'indigo',
-};
 
 function todayIso(): string {
   return new Date().toISOString().slice(0, 10);
@@ -37,6 +19,7 @@ function todayIso(): string {
 export default function Evaluations() {
   const { user } = useAuth();
   const { showToast } = useToast();
+  const { activeId: activeEtablissementId } = useEstablishment();
   const { items: evaluations, loading: loadingEvaluations } = useTeacherCollection<Evaluation>('evaluations', 'date');
   const { items: subjects, loading: loadingSubjects } = useTeacherCollection<Subject>('subjects', 'nom');
   const { items: classes, loading: loadingClasses } = useTeacherCollection<Class>('classes', 'nom');
@@ -74,6 +57,7 @@ export default function Evaluations() {
     try {
       await addTeacherDoc('evaluations', {
         teacherId: user.uid,
+        etablissementId: activeEtablissementId ?? null,
         subjectId,
         classeId: subject.classeId,
         type,
@@ -168,11 +152,16 @@ export default function Evaluations() {
                 id="eval-type"
                 className="evaluations-input"
                 value={type}
-                onChange={(e) => setType(e.target.value as EvaluationType)}
+                onChange={(e) => {
+                  const nextType = e.target.value as EvaluationType;
+                  setType(nextType);
+                  const fixedBase = EVALUATION_TYPE_DEFAULT_NOTE_MAX[nextType];
+                  if (fixedBase !== undefined) setNoteMax(String(fixedBase));
+                }}
               >
-                {(Object.keys(TYPE_LABELS) as EvaluationType[]).map((t) => (
+                {(Object.keys(EVALUATION_TYPE_LABELS) as EvaluationType[]).map((t) => (
                   <option key={t} value={t}>
-                    {TYPE_LABELS[t]}
+                    {EVALUATION_TYPE_LABELS[t]}
                   </option>
                 ))}
               </select>
@@ -211,6 +200,7 @@ export default function Evaluations() {
             <div className="evaluations-field">
               <label className="evaluations-label" htmlFor="eval-notemax">
                 Note maximale
+                <span className="evaluations-notemax-badge">Base : /{noteMax || '20'}</span>
               </label>
               <input
                 id="eval-notemax"
@@ -271,16 +261,16 @@ export default function Evaluations() {
                 </tr>
               </thead>
               <tbody>
-                {sortedEvaluations.map((evaluation) => {
+                {sortedEvaluations.map((evaluation, i) => {
                   const subject = subjectById.get(evaluation.subjectId);
                   const classe = classById.get(evaluation.classeId);
                   return (
-                    <tr key={evaluation.id}>
+                    <tr key={evaluation.id} className="row-fade-in" style={{ '--stagger-index': Math.min(i, 14) } as CSSProperties}>
                       <td className="evaluations-table-name">{subject?.nom ?? 'Matiere inconnue'}</td>
                       <td>{classe?.niveau ?? classe?.nom ?? '—'}</td>
                       <td>
-                        <span className={`evaluations-badge evaluations-badge-${TYPE_TONES[evaluation.type]}`}>
-                          {TYPE_LABELS[evaluation.type]}
+                        <span className={`evaluations-badge evaluations-badge-${EVALUATION_TYPE_TONES[evaluation.type]}`}>
+                          {EVALUATION_TYPE_LABELS[evaluation.type]}
                         </span>
                       </td>
                       <td>{evaluation.date}</td>

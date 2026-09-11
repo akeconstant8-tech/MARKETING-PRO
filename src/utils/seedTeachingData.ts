@@ -1,63 +1,57 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { addTeacherDoc } from '../services/dataService';
+import { MATIERE_COEFFICIENTS, MATIERES, PRECONFIGURED_GROUPS } from '../data/preconfiguredGroups';
 
 const ANNEE_ACADEMIQUE = '2026-2027';
 
-const MATIERES = {
-  TCI: 'Technique du Commerce International (TCI)',
-  FCME: 'Fondements, Concepts, Marketing et Étude du Marché (FCME)',
-  MARKETING: 'Marketing',
-  TVN: 'Technique de Vente et de Négociation (TVN)',
-  MI: 'Marketing International (MI)',
-} as const;
-
-const FILIERES = [
-  { key: 'GEC', nom: 'Gestion Commerciale (GEC)' },
-  { key: 'FCGE', nom: 'Finances-Comptabilité et Gestion des Entreprises (FCGE)' },
-  { key: 'LICENCE', nom: 'Licence' },
-] as const;
-
-type FiliereKey = (typeof FILIERES)[number]['key'];
-
-const CLASSES: { filiere: FiliereKey; niveau: string; matieres: (keyof typeof MATIERES)[] }[] = [
-  { filiere: 'GEC', niveau: '1ère Année', matieres: ['TCI', 'FCME', 'TVN'] },
-  { filiere: 'GEC', niveau: '2ème Année', matieres: ['TCI', 'FCME', 'MI', 'TVN'] },
-  { filiere: 'FCGE', niveau: '1ère Année', matieres: ['MARKETING'] },
-  { filiere: 'FCGE', niveau: '2ème Année', matieres: ['MARKETING'] },
-  { filiere: 'LICENCE', niveau: '1ère Année', matieres: ['TCI', 'FCME', 'TVN'] },
-  { filiere: 'LICENCE', niveau: '2ème Année', matieres: ['TCI', 'FCME', 'MI', 'TVN'] },
-];
-
 export async function teachingStructureAlreadySeeded(teacherId: string): Promise<boolean> {
-  const q = query(collection(db, 'filieres'), where('teacherId', '==', teacherId), where('nom', '==', FILIERES[0].nom));
+  const q = query(
+    collection(db, 'filieres'),
+    where('teacherId', '==', teacherId),
+    where('nom', '==', PRECONFIGURED_GROUPS[0].filiereNom)
+  );
   const snapshot = await getDocs(q);
   return !snapshot.empty;
 }
 
-/** One-time import of the teacher's real filieres/classes/matieres structure. */
-export async function seedTeachingStructure(teacherId: string): Promise<{ filieres: number; classes: number; matieres: number }> {
-  const filiereIds: Record<FiliereKey, string> = { GEC: '', FCGE: '', LICENCE: '' };
-  for (const f of FILIERES) {
-    filiereIds[f.key] = await addTeacherDoc('filieres', { teacherId, nom: f.nom, createdAt: new Date().toISOString() });
-  }
-
+/** One-time import of the teacher's real filieres/classes/matieres structure
+ * (all 6 preconfigured groups, with the correct per-matiere coefficients). */
+export async function seedTeachingStructure(
+  teacherId: string,
+  etablissementId?: string | null
+): Promise<{ filieres: number; classes: number; matieres: number }> {
+  const filiereIds = new Map<string, string>();
   let matiereCount = 0;
-  for (const classe of CLASSES) {
+
+  for (const group of PRECONFIGURED_GROUPS) {
+    let filiereId = filiereIds.get(group.filiereNom);
+    if (!filiereId) {
+      filiereId = await addTeacherDoc('filieres', {
+        teacherId,
+        etablissementId: etablissementId ?? null,
+        nom: group.filiereNom,
+        createdAt: new Date().toISOString(),
+      });
+      filiereIds.set(group.filiereNom, filiereId);
+    }
+
     const classId = await addTeacherDoc('classes', {
       teacherId,
-      nom: `${FILIERES.find((f) => f.key === classe.filiere)!.nom.split(' (')[0]} - ${classe.niveau}`,
-      niveau: classe.niveau,
-      filiereId: filiereIds[classe.filiere],
+      etablissementId: etablissementId ?? null,
+      nom: `${group.filiereNom.split(' (')[0]} - ${group.niveau}`,
+      niveau: group.niveau,
+      filiereId,
       anneeAcademique: ANNEE_ACADEMIQUE,
       createdAt: new Date().toISOString(),
     });
 
-    for (const matiereKey of classe.matieres) {
+    for (const matiereKey of group.matieres) {
       await addTeacherDoc('subjects', {
         teacherId,
+        etablissementId: etablissementId ?? null,
         nom: MATIERES[matiereKey],
-        coefficient: 1,
+        coefficient: MATIERE_COEFFICIENTS[matiereKey],
         classeId: classId,
         createdAt: new Date().toISOString(),
       });
@@ -65,5 +59,5 @@ export async function seedTeachingStructure(teacherId: string): Promise<{ filier
     }
   }
 
-  return { filieres: FILIERES.length, classes: CLASSES.length, matieres: matiereCount };
+  return { filieres: filiereIds.size, classes: PRECONFIGURED_GROUPS.length, matieres: matiereCount };
 }

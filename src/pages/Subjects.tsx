@@ -1,9 +1,10 @@
 import { useMemo, useState, type CSSProperties, type FormEvent } from 'react';
-import { BookOpen, Eye, FileText, GraduationCap, Plus, Users } from 'lucide-react';
+import { BookOpen, Check, Eye, FileText, GraduationCap, Pencil, Plus, Users, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useTeacherCollection } from '../hooks/useTeacherCollection';
-import { addTeacherDoc } from '../services/dataService';
+import { useEstablishment } from '../context/EstablishmentContext';
+import { addTeacherDoc, updateTeacherDoc } from '../services/dataService';
 import { getSubjectExpertise } from '../utils/subjectExpertise';
 import { tciChapters, TCI_COURSE_SUBTITLE } from '../data/tciCourse';
 import Button from '../components/Button';
@@ -42,6 +43,7 @@ function filiereInitials(nom: string): string {
 export default function Subjects() {
   const { user } = useAuth();
   const { showToast } = useToast();
+  const { activeId: activeEtablissementId } = useEstablishment();
   const { items: subjects, loading: loadingSubjects } = useTeacherCollection<Subject>('subjects', 'nom');
   const { items: classes, loading: loadingClasses } = useTeacherCollection<Class>('classes', 'nom');
   const { items: filieres, loading: loadingFilieres } = useTeacherCollection<Filiere>('filieres', 'nom');
@@ -53,6 +55,11 @@ export default function Subjects() {
   const [coefficient, setCoefficient] = useState('1');
   const [classeId, setClasseId] = useState('');
   const [saving, setSaving] = useState(false);
+
+  const [editingSubjectNom, setEditingSubjectNom] = useState<string | null>(null);
+  const [editNom, setEditNom] = useState('');
+  const [editCoefficient, setEditCoefficient] = useState('1');
+  const [editSaving, setEditSaving] = useState(false);
 
   const [filiereFilter, setFiliereFilter] = useState('all');
   const [yearFilter, setYearFilter] = useState('all');
@@ -120,6 +127,7 @@ export default function Subjects() {
     try {
       await addTeacherDoc('subjects', {
         teacherId: user.uid,
+        etablissementId: activeEtablissementId ?? null,
         nom: nom.trim(),
         coefficient: Number(coefficient) || 1,
         classeId,
@@ -135,6 +143,38 @@ export default function Subjects() {
       showToast('error', "Echec de l'ajout de la matiere.");
     } finally {
       setSaving(false);
+    }
+  }
+
+  function startEditSubject(subject: Subject) {
+    setEditingSubjectNom(subject.nom);
+    setEditNom(subject.nom);
+    setEditCoefficient(String(subject.coefficient));
+  }
+
+  /** Applies to every Subject document sharing this name — a matiere has a
+   * single coefficient across all the classes it's taught in (per the
+   * coefficient table), so renaming/re-weighting one updates them all. */
+  async function handleSaveEditSubject(originalNom: string) {
+    if (!editNom.trim()) return;
+    setEditSaving(true);
+    try {
+      const matches = subjects.filter((s) => s.nom === originalNom);
+      await Promise.all(
+        matches.map((s) =>
+          updateTeacherDoc('subjects', s.id, {
+            nom: editNom.trim(),
+            coefficient: Number(editCoefficient) || 1,
+          })
+        )
+      );
+      showToast('success', 'Matiere modifiee.');
+      setEditingSubjectNom(null);
+    } catch (err) {
+      console.error(err);
+      showToast('error', 'Echec de la modification.');
+    } finally {
+      setEditSaving(false);
     }
   }
 
@@ -272,8 +312,8 @@ export default function Subjects() {
                 </tr>
               </thead>
               <tbody>
-                {filteredRows.map((row) => (
-                  <tr key={row.id}>
+                {filteredRows.map((row, i) => (
+                  <tr key={row.id} className="row-fade-in" style={{ '--stagger-index': Math.min(i, 14) } as CSSProperties}>
                     <td>
                       <div className="subjects-table-filiere">
                         <span className={`subjects-table-badge subjects-table-badge-${row.tone}`}>
@@ -352,11 +392,60 @@ export default function Subjects() {
                   <div className="subject-card-icon">
                     <Icon size={20} />
                   </div>
-                  <span className="subject-card-coeff">Coef. {subject.coefficient}</span>
+                  <div className="subject-card-header-actions">
+                    <span className="subject-card-coeff">Coef. {subject.coefficient}</span>
+                    <button
+                      className="subject-card-edit"
+                      onClick={() => startEditSubject(subject)}
+                      aria-label={`Modifier ${subject.nom}`}
+                    >
+                      <Pencil size={13} />
+                    </button>
+                  </div>
                 </div>
 
-                <h3 className="subject-card-name">{subject.nom}</h3>
-                <span className="subject-card-domain">{domain}</span>
+                {editingSubjectNom === subject.nom ? (
+                  <div className="subject-card-edit-form">
+                    <input
+                      className="subject-card-edit-input"
+                      value={editNom}
+                      onChange={(e) => setEditNom(e.target.value)}
+                      placeholder="Nom de la matiere"
+                      autoFocus
+                    />
+                    <input
+                      className="subject-card-edit-input"
+                      type="number"
+                      min={1}
+                      max={10}
+                      value={editCoefficient}
+                      onChange={(e) => setEditCoefficient(e.target.value)}
+                      placeholder="Coefficient"
+                    />
+                    <div className="subject-card-edit-actions">
+                      <button
+                        className="subject-card-edit-confirm"
+                        onClick={() => handleSaveEditSubject(subject.nom)}
+                        disabled={editSaving}
+                        aria-label="Valider"
+                      >
+                        <Check size={14} />
+                      </button>
+                      <button
+                        className="subject-card-edit-cancel"
+                        onClick={() => setEditingSubjectNom(null)}
+                        aria-label="Annuler"
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <h3 className="subject-card-name">{subject.nom}</h3>
+                    <span className="subject-card-domain">{domain}</span>
+                  </>
+                )}
 
                 {classLabels.length > 0 ? (
                   <div className="subject-card-classes">

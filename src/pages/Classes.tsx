@@ -1,9 +1,11 @@
 import { useMemo, useState, type CSSProperties, type FormEvent } from 'react';
-import { Building2, Calendar, GraduationCap, Layers, Plus, Trash2 } from 'lucide-react';
+import { Building2, Calendar, Check, GraduationCap, Layers, Pencil, Plus, Sparkles, Trash2, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useTeacherCollection } from '../hooks/useTeacherCollection';
-import { addTeacherDoc, deleteTeacherDoc } from '../services/dataService';
+import { useEstablishment } from '../context/EstablishmentContext';
+import { addTeacherDoc, deleteTeacherDoc, updateTeacherDoc } from '../services/dataService';
+import { MATIERES, MATIERE_COEFFICIENTS, PRECONFIGURED_GROUPS } from '../data/preconfiguredGroups';
 import Button from '../components/Button';
 import StatCard from '../components/StatCard';
 import TiltCard from '../components/TiltCard';
@@ -14,6 +16,7 @@ import './Classes.css';
 export default function Classes() {
   const { user } = useAuth();
   const { showToast } = useToast();
+  const { activeId: activeEtablissementId } = useEstablishment();
   const { items: classes, loading: loadingClasses } = useTeacherCollection<Class>('classes', 'nom');
   const { items: filieres, loading: loadingFilieres } = useTeacherCollection<Filiere>('filieres', 'nom');
   const { items: subjects, loading: loadingSubjects } = useTeacherCollection<Subject>('subjects', 'nom');
@@ -26,6 +29,12 @@ export default function Classes() {
   const [creatingFiliere, setCreatingFiliere] = useState(false);
   const [newFiliereNom, setNewFiliereNom] = useState('');
   const [saving, setSaving] = useState(false);
+  const [addingGroupId, setAddingGroupId] = useState<string | null>(null);
+
+  const [editingClasseId, setEditingClasseId] = useState<string | null>(null);
+  const [editNiveau, setEditNiveau] = useState('');
+  const [editAnnee, setEditAnnee] = useState('');
+  const [editSaving, setEditSaving] = useState(false);
 
   const filiereById = useMemo(() => new Map(filieres.map((f) => [f.id, f])), [filieres]);
 
@@ -50,6 +59,23 @@ export default function Classes() {
     });
   }, [classes, filiereById]);
 
+  const filiereIdByNom = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const f of filieres) map.set(f.nom, f.id);
+    return map;
+  }, [filieres]);
+
+  const existingGroupIds = useMemo(() => {
+    const ids = new Set<string>();
+    for (const group of PRECONFIGURED_GROUPS) {
+      const groupFiliereId = filiereIdByNom.get(group.filiereNom);
+      if (!groupFiliereId) continue;
+      const alreadyThere = classes.some((c) => c.filiereId === groupFiliereId && (c.niveau ?? c.nom) === group.niveau);
+      if (alreadyThere) ids.add(group.id);
+    }
+    return ids;
+  }, [classes, filiereIdByNom]);
+
   async function handleCreateClasse(e: FormEvent) {
     e.preventDefault();
     if (!user || !niveau.trim() || !anneeAcademique.trim()) return;
@@ -65,6 +91,7 @@ export default function Classes() {
         resolvedFiliereNom = newFiliereNom.trim();
         resolvedFiliereId = await addTeacherDoc('filieres', {
           teacherId: user.uid,
+          etablissementId: activeEtablissementId ?? null,
           nom: resolvedFiliereNom,
           createdAt: new Date().toISOString(),
         });
@@ -72,6 +99,7 @@ export default function Classes() {
 
       await addTeacherDoc('classes', {
         teacherId: user.uid,
+        etablissementId: activeEtablissementId ?? null,
         nom: `${resolvedFiliereNom} - ${niveau.trim()}`,
         niveau: niveau.trim(),
         filiereId: resolvedFiliereId,
@@ -91,6 +119,76 @@ export default function Classes() {
       showToast('error', "Echec de l'ajout de la classe.");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleAddPreconfiguredGroup(group: (typeof PRECONFIGURED_GROUPS)[number]) {
+    if (!user || existingGroupIds.has(group.id)) return;
+    setAddingGroupId(group.id);
+    try {
+      let groupFiliereId = filiereIdByNom.get(group.filiereNom);
+      if (!groupFiliereId) {
+        groupFiliereId = await addTeacherDoc('filieres', {
+          teacherId: user.uid,
+          etablissementId: activeEtablissementId ?? null,
+          nom: group.filiereNom,
+          createdAt: new Date().toISOString(),
+        });
+      }
+
+      const classId = await addTeacherDoc('classes', {
+        teacherId: user.uid,
+        etablissementId: activeEtablissementId ?? null,
+        nom: `${group.filiereNom.split(' (')[0]} - ${group.niveau}`,
+        niveau: group.niveau,
+        filiereId: groupFiliereId,
+        anneeAcademique: anneeAcademique.trim() || new Date().getFullYear() + '-' + (new Date().getFullYear() + 1),
+        createdAt: new Date().toISOString(),
+      });
+
+      for (const matiereKey of group.matieres) {
+        await addTeacherDoc('subjects', {
+          teacherId: user.uid,
+          etablissementId: activeEtablissementId ?? null,
+          nom: MATIERES[matiereKey],
+          coefficient: MATIERE_COEFFICIENTS[matiereKey],
+          classeId: classId,
+          createdAt: new Date().toISOString(),
+        });
+      }
+
+      showToast('success', `Groupe "${group.filiereNom.split(' (')[0]} - ${group.niveau}" cree avec ses matieres.`);
+    } catch (err) {
+      console.error(err);
+      showToast('error', "Echec de la creation du groupe.");
+    } finally {
+      setAddingGroupId(null);
+    }
+  }
+
+  function startEditClasse(classe: Class) {
+    setEditingClasseId(classe.id);
+    setEditNiveau(classe.niveau ?? classe.nom);
+    setEditAnnee(classe.anneeAcademique);
+  }
+
+  async function handleSaveEditClasse(classe: Class) {
+    if (!editNiveau.trim() || !editAnnee.trim()) return;
+    setEditSaving(true);
+    try {
+      const filiere = filiereById.get(classe.filiereId ?? '');
+      await updateTeacherDoc('classes', classe.id, {
+        niveau: editNiveau.trim(),
+        anneeAcademique: editAnnee.trim(),
+        nom: `${(filiere?.nom ?? classe.nom).split(' (')[0]} - ${editNiveau.trim()}`,
+      });
+      showToast('success', 'Groupe modifie.');
+      setEditingClasseId(null);
+    } catch (err) {
+      console.error(err);
+      showToast('error', 'Echec de la modification.');
+    } finally {
+      setEditSaving(false);
     }
   }
 
@@ -126,6 +224,46 @@ export default function Classes() {
           <Plus size={18} />
           Nouvelle classe
         </Button>
+      </div>
+
+      <div className="classes-presets-card fade-in-up">
+        <div className="classes-presets-header">
+          <Sparkles size={16} />
+          <h3>Groupes preconfigures</h3>
+        </div>
+        <p className="classes-presets-hint">
+          Un clic cree la filiere (si besoin), la classe et ses matieres avec les bons coefficients.
+        </p>
+        <div className="classes-presets-grid">
+          {PRECONFIGURED_GROUPS.map((group) => {
+            const already = existingGroupIds.has(group.id);
+            return (
+              <button
+                key={group.id}
+                type="button"
+                className={`classes-preset-btn ${already ? 'classes-preset-btn-done' : ''}`}
+                onClick={() => handleAddPreconfiguredGroup(group)}
+                disabled={already || addingGroupId === group.id}
+              >
+                <span className="classes-preset-name">{group.filiereNom.split(' (')[0]}</span>
+                <span className="classes-preset-niveau">{group.niveau}</span>
+                <span className="classes-preset-status">
+                  {already ? (
+                    <>
+                      <Check size={13} /> Deja cree
+                    </>
+                  ) : addingGroupId === group.id ? (
+                    'Creation...'
+                  ) : (
+                    <>
+                      <Plus size={13} /> Ajouter
+                    </>
+                  )}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {showForm ? (
@@ -257,22 +395,69 @@ export default function Classes() {
                   <div className="class-card-icon">
                     <Building2 size={18} />
                   </div>
-                  <button
-                    className="class-card-delete"
-                    onClick={() => handleDeleteClasse(classe)}
-                    aria-label="Supprimer la classe"
-                  >
-                    <Trash2 size={15} />
-                  </button>
+                  <div className="class-card-actions">
+                    <button
+                      className="class-card-edit"
+                      onClick={() => startEditClasse(classe)}
+                      aria-label="Modifier la classe"
+                    >
+                      <Pencil size={14} />
+                    </button>
+                    <button
+                      className="class-card-delete"
+                      onClick={() => handleDeleteClasse(classe)}
+                      aria-label="Supprimer la classe"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
                 </div>
                 <h3 className="class-card-title">{filiere?.nom ?? 'Filiere inconnue'}</h3>
-                <p className="class-card-niveau">{classe.niveau ?? classe.nom}</p>
-                <div className="class-card-footer">
-                  <span className="class-card-tag">{classe.anneeAcademique}</span>
-                  <span className="class-card-tag">
-                    {nbSubjects} matiere{nbSubjects > 1 ? 's' : ''}
-                  </span>
-                </div>
+
+                {editingClasseId === classe.id ? (
+                  <div className="class-card-edit-form">
+                    <input
+                      className="class-card-edit-input"
+                      value={editNiveau}
+                      onChange={(e) => setEditNiveau(e.target.value)}
+                      placeholder="Niveau"
+                      autoFocus
+                    />
+                    <input
+                      className="class-card-edit-input"
+                      value={editAnnee}
+                      onChange={(e) => setEditAnnee(e.target.value)}
+                      placeholder="Annee academique"
+                    />
+                    <div className="class-card-edit-actions">
+                      <button
+                        className="class-card-edit-confirm"
+                        onClick={() => handleSaveEditClasse(classe)}
+                        disabled={editSaving}
+                        aria-label="Valider"
+                      >
+                        <Check size={14} />
+                      </button>
+                      <button
+                        className="class-card-edit-cancel"
+                        onClick={() => setEditingClasseId(null)}
+                        aria-label="Annuler"
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <p className="class-card-niveau">{classe.niveau ?? classe.nom}</p>
+                    <div className="class-card-footer">
+                      <span className="class-card-tag">{classe.anneeAcademique}</span>
+                      <span className="class-card-tag">
+                        {nbSubjects} matiere{nbSubjects > 1 ? 's' : ''}
+                      </span>
+                    </div>
+                  </>
+                )}
               </TiltCard>
             );
           })}
