@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import PageTransition from './PageTransition';
+import InstallPrompt from './InstallPrompt';
 import './Layout.css';
 
 const titles: Record<string, string> = {
@@ -55,6 +56,7 @@ export default function Layout() {
           <span>&copy; {new Date().getFullYear()} Marketing Pro. Tous droits reserves.</span>
         </footer>
       </div>
+      <InstallPrompt />
     </div>
   );
 }
