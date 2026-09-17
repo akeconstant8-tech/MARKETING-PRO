@@ -527,8 +527,9 @@
 
 .hero-row {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 48px;
+  gap: 40px;
   width: 100%;
 }
 
@@ -538,19 +539,27 @@
   padding-top: 12px;
 }
 
+/* Stacked below the text on phone/tablet, then side-by-side alongside it
+   from desktop width up. */
 .hero-visual {
-  display: none;
+  display: flex;
   position: relative;
-  flex: 1;
+  width: 100%;
   align-items: center;
   justify-content: center;
-  align-self: stretch;
   min-width: 0;
 }
 
 @media (min-width: 960px) {
+  .hero-row {
+    flex-direction: row;
+    align-items: center;
+    gap: 48px;
+  }
+
   .hero-visual {
-    display: flex;
+    flex: 1;
+    align-self: stretch;
   }
 
   .hero-copy {
