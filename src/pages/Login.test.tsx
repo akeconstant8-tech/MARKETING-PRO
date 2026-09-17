@@ -29,11 +29,11 @@ describe('Login page — welcome / login toggle', () => {
     expect(screen.queryByRole('heading', { name: 'Connexion' })).not.toBeInTheDocument();
   });
 
-  it('shows only the login form (not the welcome copy) after clicking "Se connecter"', async () => {
+  it('shows only the login form (not the welcome copy) after clicking "Connexion"', async () => {
     const user = userEvent.setup();
     renderLogin();
 
-    await user.click(screen.getByRole('button', { name: /se connecter/i }));
+    await user.click(screen.getByRole('button', { name: /connexion/i }));
 
     expect(await screen.findByRole('heading', { name: 'Connexion' })).toBeInTheDocument();
     expect(screen.queryByText(/Bienvenue Professeur/)).not.toBeInTheDocument();
@@ -43,7 +43,7 @@ describe('Login page — welcome / login toggle', () => {
     const user = userEvent.setup();
     renderLogin();
 
-    await user.click(screen.getByRole('button', { name: /se connecter/i }));
+    await user.click(screen.getByRole('button', { name: /connexion/i }));
     await screen.findByRole('heading', { name: 'Connexion' });
 
     await user.click(screen.getByRole('button', { name: /retour/i }));
@@ -55,7 +55,7 @@ describe('Login page — welcome / login toggle', () => {
   it('toggles the password field between hidden and visible text', async () => {
     const user = userEvent.setup();
     renderLogin();
-    await user.click(screen.getByRole('button', { name: /se connecter/i }));
+    await user.click(screen.getByRole('button', { name: /connexion/i }));
     await screen.findByRole('heading', { name: 'Connexion' });
 
     const passwordInput = screen.getByLabelText('Mot de passe');
@@ -68,7 +68,7 @@ describe('Login page — welcome / login toggle', () => {
   it('disables the submit button until both email and password are filled', async () => {
     const user = userEvent.setup();
     renderLogin();
-    await user.click(screen.getByRole('button', { name: /se connecter/i }));
+    await user.click(screen.getByRole('button', { name: /connexion/i }));
     const form = (await screen.findByRole('heading', { name: 'Connexion' })).closest('.hero-login-card') as HTMLElement;
 
     const submit = within(form).getByRole('button', { name: /se connecter/i });

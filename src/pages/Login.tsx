@@ -7,6 +7,7 @@ import {
   BarChart3,
   BookOpen,
   CalendarDays,
+  CheckCircle2,
   Eye,
   EyeOff,
   GraduationCap,
@@ -18,29 +19,46 @@ import {
   Sun,
   UserPlus,
   Users,
+  WifiOff,
 } from 'lucide-react';
 import Logo from '../components/Logo';
 import Button from '../components/Button';
 import BlurText from '../components/effects/BlurText';
 import ShinyText from '../components/effects/ShinyText';
 import { AnimatedList, AnimatedListItem } from '../components/effects/AnimatedList';
-import MagnetButton from '../components/effects/MagnetButton';
-import ClickSpark from '../components/effects/ClickSpark';
 import { resetPassword, signInWithEmail, signInWithGoogle } from '../services/authService';
 import { useToast } from '../context/ToastContext';
 import { useTheme } from '../hooks/useTheme';
+import imgCours from '../assets/images/landing/landing-cours.jpg';
+import imgMarketing from '../assets/images/landing/landing-marketing.jpg';
+import imgEtudiant from '../assets/images/landing/landing-etudiant.jpg';
+import imgGestionNotes from '../assets/images/landing/landing-gestion-notes.jpg';
+import imgPlanning from '../assets/images/landing/landing-planning.jpg';
 import './Auth.css';
 
 const features = [
-  { icon: BookOpen, label: 'Cours et supports' },
-  { icon: BarChart3, label: 'Gestion des notes' },
-  { icon: Users, label: 'Suivi des étudiants' },
-  { icon: CalendarDays, label: 'Planning et évaluations' },
+  { icon: BookOpen, label: 'Cours et supports', description: 'Organisez vos cours et ressources par chapitre, prets a etre consultes en classe.', image: imgCours },
+  { icon: BarChart3, label: 'Gestion des notes', description: 'Saisissez et suivez les notes de vos etudiants, moyennes calculees automatiquement.', image: imgGestionNotes },
+  { icon: Users, label: 'Suivi des étudiants', description: 'Un profil complet par etudiant, classe par classe, filiere par filiere.', image: imgEtudiant },
+  { icon: CalendarDays, label: 'Planning et évaluations', description: "Organisez vos evaluations et gardez une vue d'ensemble de votre planning.", image: imgPlanning },
+];
+
+const whyChecklist = [
+  'Interface moderne et intuitive',
+  'Acces rapide a vos cours et ressources',
+  'Suivi personnalise de vos etudiants',
+  'Securite et confidentialite de vos donnees',
 ];
 
 const stats = [
   { icon: GraduationCap, value: 'Multi', label: 'Filières & classes' },
   { icon: Sparkles, value: 'Gratuit', label: 'Sans engagement' },
+];
+
+const ctaStats = [
+  { icon: GraduationCap, value: 'Multi', label: 'Établissements & groupes' },
+  { icon: WifiOff, value: '100%', label: 'Fonctionne hors connexion' },
+  { icon: Sparkles, value: 'Gratuit', label: 'Pour les enseignants' },
 ];
 
 export default function Login() {
@@ -122,12 +140,15 @@ export default function Login() {
         </a>
         <nav className="landing-nav-links">
           <a href="#top">Accueil</a>
-          <a href="#apropos">À propos</a>
           <a href="#contact">Contact</a>
+          <a href="#apropos">À propos</a>
         </nav>
         <div className="landing-nav-actions">
           <button className="landing-theme-btn" onClick={toggleTheme} aria-label="Changer de theme">
             {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
+          </button>
+          <button className="landing-nav-login-btn" onClick={openLogin}>
+            Connexion
           </button>
         </div>
       </header>
@@ -137,12 +158,13 @@ export default function Login() {
           {!showLogin ? (
             <motion.div
               key="welcome"
-              className="hero-copy"
+              className="hero-row"
               initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -16 }}
               transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
             >
+            <div className="hero-copy">
               <motion.span
                 className="hero-badge"
                 initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
@@ -156,7 +178,27 @@ export default function Login() {
               <BlurText text="Bienvenue Professeur 👋" className="hero-welcome" delay={0.4} as="p" />
               <h1 className="hero-title">
                 <BlurText text="Transformez votre enseignement du" delay={0.6} stagger={0.14} duration={0.85} blur={10} rise={16} />{' '}
-                <ShinyText className="hero-accent">Marketing</ShinyText>
+                <span className="hero-accent-wrap">
+                  <ShinyText className="hero-accent">Marketing</ShinyText>
+                  <svg className="hero-accent-mark" viewBox="0 0 220 22" preserveAspectRatio="none" aria-hidden="true">
+                    <motion.path
+                      d="M4 14.5C40 6 90 4 116 9C150 15.5 180 6 216 11"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeWidth="6"
+                      initial={reducedMotion ? { pathLength: 1 } : { pathLength: 0 }}
+                      animate={reducedMotion ? { pathLength: 1 } : { pathLength: 1, opacity: [0.55, 1, 0.55] }}
+                      transition={
+                        reducedMotion
+                          ? { duration: 0.01 }
+                          : {
+                              pathLength: { duration: 0.7, delay: 1.85, ease: [0.16, 1, 0.3, 1] },
+                              opacity: { duration: 2.6, delay: 2.2, repeat: Infinity, ease: 'easeInOut' },
+                            }
+                      }
+                    />
+                  </svg>
+                </span>
               </h1>
               <motion.p
                 className="hero-sub"
@@ -178,17 +220,6 @@ export default function Login() {
                   </AnimatedListItem>
                 ))}
               </AnimatedList>
-
-              <div className="hero-cta">
-                <ClickSpark>
-                  <MagnetButton>
-                    <button className="btn btn-gradient" onClick={openLogin}>
-                      Se connecter
-                      <ArrowRight size={18} />
-                    </button>
-                  </MagnetButton>
-                </ClickSpark>
-              </div>
 
               <motion.p
                 className="hero-pricing-note"
@@ -218,6 +249,18 @@ export default function Login() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            <motion.div
+              className="hero-visual"
+              initial={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="hero-photo-frame">
+                <img src={imgMarketing} alt="Professeur utilisant Marketing Pro sur son ordinateur portable" className="hero-photo" />
+              </div>
+            </motion.div>
             </motion.div>
           ) : (
             <motion.div
@@ -311,8 +354,14 @@ export default function Login() {
                     </button>
                   </div>
 
-                  <Button type="submit" variant="gradient" fullWidth loading={loading} disabled={!email || !password}>
-                    Se connecter
+                  <Button
+                    type="submit"
+                    variant="gradient"
+                    fullWidth
+                    loading={loading}
+                    disabled={!email || !password}
+                    aria-label="Se connecter"
+                  >
                     <ArrowRight size={18} />
                   </Button>
                 </form>
@@ -342,6 +391,69 @@ export default function Login() {
             </motion.div>
           )}
         </AnimatePresence>
+      </section>
+
+      <section className="landing-why" id="fonctionnalites">
+        <div className="why-copy">
+          <span className="about-eyebrow">Fonctionnalités</span>
+          <h2 className="why-title">Pourquoi choisir MarketingPro ?</h2>
+          <p className="why-lead">
+            Une plateforme pensée pour les enseignants de marketing, simple, efficace et accessible partout.
+          </p>
+          <ul className="why-checklist">
+            {whyChecklist.map((item) => (
+              <li key={item}>
+                <CheckCircle2 size={18} />
+                {item}
+              </li>
+            ))}
+          </ul>
+          <p className="why-quote">Ensemble pour une éducation plus innovante !</p>
+        </div>
+
+        <div className="why-cards">
+          {features.map((f) => (
+            <div key={f.label} className="why-card">
+              {f.image ? (
+                <div className="why-card-image-wrap">
+                  <img src={f.image} alt="" className="why-card-image" loading="lazy" />
+                </div>
+              ) : null}
+              <span className="why-card-icon">
+                <f.icon size={20} />
+              </span>
+              <h3>{f.label}</h3>
+              <p>{f.description}</p>
+              <a href="#hero-panel" className="why-card-link">
+                En savoir plus <ArrowRight size={13} />
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="landing-cta-band">
+        <div className="cta-band-copy">
+          <span className="cta-band-eyebrow">Prêt à transformer votre enseignement ?</span>
+          <h2>Rejoignez MarketingPro dès aujourd'hui !</h2>
+          <p>Des outils puissants pour un enseignement plus efficace et un meilleur suivi de vos étudiants.</p>
+          <button className="cta-band-btn" onClick={openLogin}>
+            Rejoindre maintenant
+            <ArrowRight size={18} />
+          </button>
+        </div>
+
+        <div className="cta-band-stats">
+          {ctaStats.map((s) => (
+            <div key={s.label} className="cta-band-stat">
+              <s.icon size={20} />
+              <strong>{s.value}</strong>
+              <span>{s.label}</span>
+            </div>
+          ))}
+        </div>
+
+        <p className="cta-band-tag">Le savoir est une force</p>
       </section>
 
       <section className="landing-about" id="apropos">
@@ -423,8 +535,8 @@ export default function Login() {
         </div>
         <nav className="landing-footer-links">
           <a href="#top">Accueil</a>
-          <a href="#apropos">À propos</a>
           <a href="mailto:contact@marketingpro.app">Contact</a>
+          <a href="#apropos">À propos</a>
         </nav>
         <p className="landing-footer-tag">Ensemble pour un marketing d'excellence !</p>
       </footer>
