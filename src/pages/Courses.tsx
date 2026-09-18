@@ -14,7 +14,7 @@ import TeachingCourseCard from '../components/TeachingCourseCard';
 import PdfFlipViewer from '../components/PdfFlipViewer';
 import TeachingReader from '../components/TeachingReader';
 import CourseReader from '../components/CourseReader';
-import { tciChapters, TCI_COURSE_SUBTITLE, TCI_COURSE_TITLE } from '../data/tciCourse';
+import { tciChapters, TCI_COURSE_SUBTITLE_1, TCI_COURSE_SUBTITLE_2, TCI_COURSE_TITLE } from '../data/tciCourse';
 import type { Course, CourseAttachment, Subject } from '../types';
 import './Courses.css';
 
@@ -25,6 +25,8 @@ export default function Courses() {
   const { items: subjects, loading: loadingSubjects } = useTeacherCollection<Subject>('subjects', 'nom');
   const { items: courses, loading: loadingCourses } = useTeacherCollection<Course>('courses', 'titre');
   const { viewed, markViewed } = useViewedChapters();
+  const [teachingLevel, setTeachingLevel] = useState<1 | 2>(1);
+  const visibleTciChapters = useMemo(() => tciChapters.filter((c) => c.level === teachingLevel), [teachingLevel]);
 
   const [showForm, setShowForm] = useState(false);
   const [titre, setTitre] = useState('');
@@ -279,10 +281,26 @@ export default function Courses() {
       <div className="courses-teaching-card">
         <div className="courses-teaching-header">
           <h3 className="courses-teaching-title">Mon enseignement — {TCI_COURSE_TITLE}</h3>
-          <p className="courses-teaching-subtitle">{TCI_COURSE_SUBTITLE}</p>
+          <p className="courses-teaching-subtitle">{teachingLevel === 1 ? TCI_COURSE_SUBTITLE_1 : TCI_COURSE_SUBTITLE_2}</p>
+        </div>
+        <div className="courses-teaching-level-toggle">
+          <button
+            type="button"
+            className={teachingLevel === 1 ? 'courses-teaching-level-btn courses-teaching-level-btn-active' : 'courses-teaching-level-btn'}
+            onClick={() => setTeachingLevel(1)}
+          >
+            1ère Année
+          </button>
+          <button
+            type="button"
+            className={teachingLevel === 2 ? 'courses-teaching-level-btn courses-teaching-level-btn-active' : 'courses-teaching-level-btn'}
+            onClick={() => setTeachingLevel(2)}
+          >
+            2ème Année
+          </button>
         </div>
         <div className="courses-teaching-grid">
-          {tciChapters.map((chapter, i) => (
+          {visibleTciChapters.map((chapter, i) => (
             <ChapterCard
               key={chapter.id}
               chapter={chapter}

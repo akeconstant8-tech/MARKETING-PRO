@@ -6,7 +6,7 @@ import { useTeacherCollection } from '../hooks/useTeacherCollection';
 import { useEstablishment } from '../context/EstablishmentContext';
 import { addTeacherDoc, updateTeacherDoc } from '../services/dataService';
 import { getSubjectExpertise } from '../utils/subjectExpertise';
-import { tciChapters, TCI_COURSE_SUBTITLE } from '../data/tciCourse';
+import { tciChapters, TCI_COURSE_SUBTITLE_1, TCI_COURSE_SUBTITLE_2 } from '../data/tciCourse';
 import Button from '../components/Button';
 import StatCard from '../components/StatCard';
 import TiltCard from '../components/TiltCard';
@@ -457,25 +457,31 @@ export default function Subjects() {
                   </div>
                 ) : null}
 
-                {isTci ? (
-                  <div className="subject-teaching">
-                    <div className="subject-teaching-header">
-                      <GraduationCap size={15} />
-                      <span>Mon enseignement — {TCI_COURSE_SUBTITLE}</span>
-                    </div>
-                    <div className="subject-teaching-grid">
-                      {tciChapters.map((chapter, ci) => (
-                        <button
-                          key={chapter.id}
-                          className="subject-teaching-chip"
-                          onClick={() => setReaderIndex(ci)}
-                        >
-                          {chapter.kind === 'chapitre' ? `Ch. ${chapter.number}` : `Cas ${chapter.number - 7}`}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ) : null}
+                {isTci
+                  ? ([1, 2] as const).map((level) => {
+                      const levelChapters = tciChapters.filter((c) => c.level === level);
+                      const chapitreCount = levelChapters.filter((c) => c.kind === 'chapitre').length;
+                      return (
+                        <div className="subject-teaching" key={level}>
+                          <div className="subject-teaching-header">
+                            <GraduationCap size={15} />
+                            <span>Mon enseignement — {level === 1 ? TCI_COURSE_SUBTITLE_1 : TCI_COURSE_SUBTITLE_2}</span>
+                          </div>
+                          <div className="subject-teaching-grid">
+                            {levelChapters.map((chapter, ci) => (
+                              <button
+                                key={chapter.id}
+                                className="subject-teaching-chip"
+                                onClick={() => setReaderIndex(chapter.number - 1)}
+                              >
+                                {chapter.kind === 'chapitre' ? `Ch. ${ci + 1}` : `Cas ${ci + 1 - chapitreCount}`}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })
+                  : null}
               </TiltCard>
             );
           })}

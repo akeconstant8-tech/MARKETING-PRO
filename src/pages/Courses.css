@@ -36,6 +36,34 @@
   color: var(--color-text-secondary);
 }
 
+.courses-teaching-level-toggle {
+  display: inline-flex;
+  gap: 4px;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  margin-bottom: 16px;
+}
+
+.courses-teaching-level-btn {
+  border: none;
+  background: none;
+  padding: 7px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.courses-teaching-level-btn-active {
+  background: var(--color-primary);
+  color: #fff;
+}
+
 .courses-teaching-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
