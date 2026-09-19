@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { BookOpen, ChevronLeft, ChevronRight, FileText, List, Quote, X } from 'lucide-react';
 import { tciChapters, TCI_COURSE_SUBTITLE, TCI_COURSE_TITLE } from '../data/tciCourse';
 import type { TciSection } from '../data/tciCourse';
+import TciDiagramView from './TciDiagramView';
 import commerceImage from '../assets/images/reader/commerce-international.jpg';
 import './TeachingReader.css';
 
@@ -103,7 +104,7 @@ export default function TeachingReader({ startIndex, onClose }: Props) {
                       ) : null}
                       {s.paragraphs?.map((p, j) => <p key={j}>{p}</p>)}
                       {s.list ? (
-                        <ul className="reader-badge-list">
+                        <ul className={`reader-badge-list${s.list.some((li) => li.length > 70) ? ' reader-badge-list-long' : ''}`}>
                           {s.list.map((li, k) => (
                             <li key={k}>
                               <span className={`reader-badge ${BADGE_TONES[k % BADGE_TONES.length]}`}>{k + 1}</span>
@@ -112,6 +113,41 @@ export default function TeachingReader({ startIndex, onClose }: Props) {
                           ))}
                         </ul>
                       ) : null}
+                      {s.formulas?.map((f, j) => (
+                        <div key={j} className="reader-formula">
+                          {f}
+                        </div>
+                      ))}
+                      {s.table ? (
+                        <div className="reader-table-wrap">
+                          <table className="reader-table">
+                            {s.table.caption ? <caption>{s.table.caption}</caption> : null}
+                            <thead>
+                              <tr>
+                                {s.table.headers.map((h, k) => (
+                                  <th key={k}>{h}</th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {s.table.rows.map((row, r) => (
+                                <tr key={r}>
+                                  {row.map((cell, c) => (
+                                    <td key={c}>{cell}</td>
+                                  ))}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      ) : null}
+                      {s.figure ? (
+                        <figure className="reader-figure">
+                          <img src={s.figure.src} alt={s.figure.alt} loading="lazy" />
+                          {s.figure.caption ? <figcaption>{s.figure.caption}</figcaption> : null}
+                        </figure>
+                      ) : null}
+                      {s.diagram ? <TciDiagramView diagram={s.diagram} /> : null}
                     </div>
                   );
                 })}

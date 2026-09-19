@@ -78,9 +78,15 @@ export const CHAPTER_VISUALS: Record<number, ChapterVisual> = {
   19: { icon: ClipboardList, tone: 'red', image: imgGestionCommande2, imagePosition: 'center 22%' },
   20: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[0], image: imgCasIsrael },
   21: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[1], image: imgCasYeshua },
-  22: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[2], image: imgCasCaveYop },
-  23: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[3], image: imgCasVictoire },
-  24: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[4], image: imgCasMage },
+  // Cas pratiques de 2e année, dans l'ordre du support de cours (p. 69-80).
+  // Yegossoum, Gloire, Lagoon Bleu et Ets Adjé n'ont pas encore de photo dédiée.
+  22: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[2] },
+  23: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[3], image: imgCasCaveYop },
+  24: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[4], image: imgCasVictoire },
+  25: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[0] },
+  26: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[1], image: imgCasMage },
+  27: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[2] },
+  28: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[3] },
 };
 
 export function getChapterVisual(chapterNumber: number): ChapterVisual {
