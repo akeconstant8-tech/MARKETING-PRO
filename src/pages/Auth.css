@@ -1022,16 +1022,13 @@
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
   color: #fff;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 28px;
   overflow: hidden;
 }
 
 .cta-band-copy {
-  flex: 1;
-  min-width: 260px;
+  max-width: 640px;
 }
 
 .cta-band-eyebrow {
@@ -1086,7 +1083,7 @@
 
 .cta-band-stats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(min(120px, 100%), 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 14px;
 }
 
@@ -1105,6 +1102,7 @@
 .cta-band-stat svg {
   color: var(--color-accent-light);
   margin-bottom: 2px;
+  flex-shrink: 0;
 }
 
 .cta-band-stat strong {
@@ -1118,26 +1116,82 @@
   line-height: 1.3;
 }
 
-.cta-band-tag {
-  position: absolute;
-  bottom: 14px;
-  right: 20px;
-  font-family: var(--font-handwritten);
-  font-size: 17px;
-  color: rgba(255, 255, 255, 0.5);
-  margin: 0;
+.cta-band-stat > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
 
-@media (max-width: 700px) {
-  .landing-cta-band {
-    padding: 36px 24px 44px;
-    margin: 0 16px 44px;
+.cta-band-tag {
+  position: relative;
+  align-self: flex-start;
+  font-family: var(--font-handwritten);
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  padding-bottom: 8px;
+}
+
+.cta-band-tag::after {
+  content: '';
+  position: absolute;
+  left: 1px;
+  bottom: 0;
+  width: 92%;
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent-light);
+  transform: rotate(-1deg);
+}
+
+/* Tablette (768–1023px) : cartes stats sur 2 colonnes, la 3ᵉ occupe toute la largeur */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .cta-band-stats {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .cta-band-tag {
-    position: static;
-    margin-top: 8px;
-    text-align: center;
+  .cta-band-stat:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Mobile (< 768px) : cartes stats empilées, icône + texte en ligne */
+@media (max-width: 767px) {
+  .landing-cta-band {
+    padding: 32px 22px 36px;
+    margin: 0 16px 44px;
+    gap: 22px;
+  }
+
+  .cta-band-copy {
+    max-width: none;
+  }
+
+  .cta-band-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cta-band-stats {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .cta-band-stat {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    gap: 12px;
+    padding: 12px 14px;
+  }
+
+  .cta-band-stat svg {
+    margin-bottom: 0;
+  }
+
+  .cta-band-stat > div {
+    align-items: flex-start;
   }
 }
 

@@ -447,8 +447,10 @@ export default function Login() {
           {ctaStats.map((s) => (
             <div key={s.label} className="cta-band-stat">
               <s.icon size={20} />
-              <strong>{s.value}</strong>
-              <span>{s.label}</span>
+              <div>
+                <strong>{s.value}</strong>
+                <span>{s.label}</span>
+              </div>
             </div>
           ))}
         </div>
