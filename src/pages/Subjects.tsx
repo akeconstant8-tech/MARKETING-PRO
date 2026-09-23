@@ -7,6 +7,10 @@ import { useEstablishment } from '../context/EstablishmentContext';
 import { addTeacherDoc, updateTeacherDoc } from '../services/dataService';
 import { getSubjectExpertise } from '../utils/subjectExpertise';
 import { tciChapters, TCI_COURSE_SUBTITLE_1, TCI_COURSE_SUBTITLE_2 } from '../data/tciCourse';
+import { miChapters, MI_COURSE_SUBTITLE } from '../data/miCourse';
+import { marketingChapters, MARKETING_COURSE_SUBTITLE, MARKETING_COURSE_TITLE } from '../data/marketingCourse';
+import { fcmeChapters, FCME_COURSE_SUBTITLE, FCME_COURSE_TITLE } from '../data/fcmeCourse';
+import landingMarketingImage from '../assets/images/landing/landing-marketing.jpg';
 import Button from '../components/Button';
 import StatCard from '../components/StatCard';
 import TiltCard from '../components/TiltCard';
@@ -16,6 +20,9 @@ import type { Class, Filiere, Subject } from '../types';
 import './Subjects.css';
 
 const TCI_PATTERN = /\bTCI\b|Technique du Commerce International/i;
+const MI_PATTERN = /\bMI\b|Marketing International/i;
+const MARKETING_PATTERN = /\bMarketing\b/i;
+const FCME_PATTERN = /\bFCME\b|Fondements,? Concepts,? Marketing/i;
 const ROW_TONES = ['blue', 'green', 'purple', 'teal', 'orange', 'indigo'];
 
 interface SubjectGroup {
@@ -48,6 +55,9 @@ export default function Subjects() {
   const { items: classes, loading: loadingClasses } = useTeacherCollection<Class>('classes', 'nom');
   const { items: filieres, loading: loadingFilieres } = useTeacherCollection<Filiere>('filieres', 'nom');
   const [readerIndex, setReaderIndex] = useState<number | null>(null);
+  const [miReaderIndex, setMiReaderIndex] = useState<number | null>(null);
+  const [mktReaderIndex, setMktReaderIndex] = useState<number | null>(null);
+  const [fcmeReaderIndex, setFcmeReaderIndex] = useState<number | null>(null);
   const loading = loadingSubjects || loadingClasses || loadingFilieres;
 
   const [showForm, setShowForm] = useState(false);
@@ -380,6 +390,9 @@ export default function Subjects() {
           {subjectGroups.map(({ subject, classLabels }, i) => {
             const { icon: Icon, domain } = getSubjectExpertise(subject.nom);
             const isTci = TCI_PATTERN.test(subject.nom);
+            const isMi = !isTci && MI_PATTERN.test(subject.nom);
+            const isFcme = !isTci && !isMi && FCME_PATTERN.test(subject.nom);
+            const isMarketing = !isTci && !isMi && !isFcme && MARKETING_PATTERN.test(subject.nom);
 
             return (
               <TiltCard
@@ -482,6 +495,66 @@ export default function Subjects() {
                       );
                     })
                   : null}
+
+                {isMi ? (
+                  <div className="subject-teaching">
+                    <div className="subject-teaching-header">
+                      <GraduationCap size={15} />
+                      <span>Mon enseignement — {MI_COURSE_SUBTITLE}</span>
+                    </div>
+                    <div className="subject-teaching-grid">
+                      {miChapters.map((chapter, ci) => (
+                        <button
+                          key={chapter.id}
+                          className="subject-teaching-chip"
+                          onClick={() => setMiReaderIndex(chapter.number - 1)}
+                        >
+                          {`Ch. ${ci + 1}`}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+
+                {isMarketing ? (
+                  <div className="subject-teaching">
+                    <div className="subject-teaching-header">
+                      <GraduationCap size={15} />
+                      <span>Mon enseignement — {MARKETING_COURSE_TITLE} ({MARKETING_COURSE_SUBTITLE})</span>
+                    </div>
+                    <div className="subject-teaching-grid">
+                      {marketingChapters.map((chapter, ci) => (
+                        <button
+                          key={chapter.id}
+                          className="subject-teaching-chip"
+                          onClick={() => setMktReaderIndex(chapter.number - 1)}
+                        >
+                          {`Ch. ${ci + 1}`}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+
+                {isFcme ? (
+                  <div className="subject-teaching">
+                    <div className="subject-teaching-header">
+                      <GraduationCap size={15} />
+                      <span>Mon enseignement — {FCME_COURSE_TITLE} ({FCME_COURSE_SUBTITLE})</span>
+                    </div>
+                    <div className="subject-teaching-grid">
+                      {fcmeChapters.map((chapter, ci) => (
+                        <button
+                          key={chapter.id}
+                          className="subject-teaching-chip"
+                          onClick={() => setFcmeReaderIndex(chapter.number - 1)}
+                        >
+                          {`Ch. ${ci + 1}`}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
               </TiltCard>
             );
           })}
@@ -490,6 +563,45 @@ export default function Subjects() {
 
       {readerIndex !== null ? (
         <TeachingReader startIndex={readerIndex} onClose={() => setReaderIndex(null)} />
+      ) : null}
+
+      {miReaderIndex !== null ? (
+        <TeachingReader
+          startIndex={miReaderIndex}
+          onClose={() => setMiReaderIndex(null)}
+          chapters={miChapters}
+          courseTitle="Marketing International"
+          courseSubtitle={MI_COURSE_SUBTITLE}
+          sideImage={landingMarketingImage}
+          sideHeading="Marketing International"
+          sideText="Vendre et communiquer au-delà des frontières"
+        />
+      ) : null}
+
+      {mktReaderIndex !== null ? (
+        <TeachingReader
+          startIndex={mktReaderIndex}
+          onClose={() => setMktReaderIndex(null)}
+          chapters={marketingChapters}
+          courseTitle="Marketing"
+          courseSubtitle={MARKETING_COURSE_SUBTITLE}
+          sideImage={landingMarketingImage}
+          sideHeading="Marketing"
+          sideText="Comprendre le marché, créer et fidéliser la clientèle"
+        />
+      ) : null}
+
+      {fcmeReaderIndex !== null ? (
+        <TeachingReader
+          startIndex={fcmeReaderIndex}
+          onClose={() => setFcmeReaderIndex(null)}
+          chapters={fcmeChapters}
+          courseTitle="FCME"
+          courseSubtitle={FCME_COURSE_SUBTITLE}
+          sideImage={landingMarketingImage}
+          sideHeading="FCME"
+          sideText="Fondements, concepts, marketing et étude du marché"
+        />
       ) : null}
     </div>
   );

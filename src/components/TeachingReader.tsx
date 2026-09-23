@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BookOpen, ChevronLeft, ChevronRight, FileText, List, Quote, X } from 'lucide-react';
 import { tciChapters, TCI_COURSE_SUBTITLE, TCI_COURSE_TITLE } from '../data/tciCourse';
-import type { TciSection } from '../data/tciCourse';
+import type { TciChapter, TciSection } from '../data/tciCourse';
 import TciDiagramView from './TciDiagramView';
 import commerceImage from '../assets/images/reader/commerce-international.jpg';
 import './TeachingReader.css';
@@ -10,6 +10,15 @@ import './TeachingReader.css';
 interface Props {
   startIndex: number;
   onClose: () => void;
+  /** Defaults to the built-in TCI course so every existing caller keeps
+   * working unchanged; another built-in course (e.g. Marketing International)
+   * passes its own chapters/title/subtitle/side panel instead. */
+  chapters?: TciChapter[];
+  courseTitle?: string;
+  courseSubtitle?: string;
+  sideImage?: string;
+  sideHeading?: string;
+  sideText?: string;
 }
 
 const SECTION_TONES = ['tone-indigo', 'tone-green', 'tone-purple', 'tone-orange', 'tone-blue'] as const;
@@ -19,13 +28,22 @@ function sectionIcon(section: TciSection) {
   return section.list ? List : FileText;
 }
 
-/** A hardcoded, in-app reader for the TCI course — deliberately not backed by
- * Firebase Storage/Firestore, so it renders instantly with zero setup and
- * ships as part of the app bundle. */
-export default function TeachingReader({ startIndex, onClose }: Props) {
+/** A hardcoded, in-app reader for the built-in courses — deliberately not
+ * backed by Firebase Storage/Firestore, so it renders instantly with zero
+ * setup and ships as part of the app bundle. */
+export default function TeachingReader({
+  startIndex,
+  onClose,
+  chapters = tciChapters,
+  courseTitle = TCI_COURSE_TITLE,
+  courseSubtitle = TCI_COURSE_SUBTITLE,
+  sideImage = commerceImage,
+  sideHeading = 'Commerce International',
+  sideText = 'Des opportunites sans frontieres',
+}: Props) {
   const [index, setIndex] = useState(startIndex);
-  const chapter = tciChapters[index];
-  const total = tciChapters.length;
+  const chapter = chapters[index];
+  const total = chapters.length;
 
   function go(delta: number) {
     setIndex((i) => Math.min(total - 1, Math.max(0, i + delta)));
@@ -40,8 +58,8 @@ export default function TeachingReader({ startIndex, onClose }: Props) {
               <BookOpen size={20} />
             </div>
             <div className="reader-header-text">
-              <span className="reader-kicker">{TCI_COURSE_TITLE}</span>
-              <span className="reader-kicker-sub">{TCI_COURSE_SUBTITLE}</span>
+              <span className="reader-kicker">{courseTitle}</span>
+              <span className="reader-kicker-sub">{courseSubtitle}</span>
             </div>
           </div>
           <div className="reader-header-right">
@@ -155,11 +173,11 @@ export default function TeachingReader({ startIndex, onClose }: Props) {
             </AnimatePresence>
           </div>
 
-          <div className="reader-side" style={{ backgroundImage: `url(${commerceImage})` }}>
+          <div className="reader-side" style={{ backgroundImage: `url(${sideImage})` }}>
             <div className="reader-side-scrim" />
             <div className="reader-side-text">
-              <h4>Commerce International</h4>
-              <p>Des opportunites sans frontieres</p>
+              <h4>{sideHeading}</h4>
+              <p>{sideText}</p>
               <span className="reader-side-rule" />
             </div>
           </div>
@@ -172,7 +190,7 @@ export default function TeachingReader({ startIndex, onClose }: Props) {
           </button>
           <div className="reader-footer-center">
             <div className="reader-dots">
-              {tciChapters.map((c, i) => (
+              {chapters.map((c, i) => (
                 <button
                   key={c.id}
                   className={`reader-dot ${i === index ? 'reader-dot-active' : ''}`}

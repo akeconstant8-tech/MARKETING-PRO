@@ -34,6 +34,14 @@ import TeachingReader from '../components/TeachingReader';
 import { useInViewOnce } from '../hooks/useInViewOnce';
 import { normalizeNote } from '../utils/calculations';
 import { tciChapters } from '../data/tciCourse';
+import { getChapterVisual } from '../data/chapterVisuals';
+import { miChapters, MI_COURSE_SUBTITLE } from '../data/miCourse';
+import { getMiChapterVisual } from '../data/miChapterVisuals';
+import { marketingChapters, MARKETING_COURSE_SUBTITLE } from '../data/marketingCourse';
+import { getMarketingChapterVisual } from '../data/marketingChapterVisuals';
+import { fcmeChapters, FCME_COURSE_SUBTITLE } from '../data/fcmeCourse';
+import { getFcmeChapterVisual } from '../data/fcmeChapterVisuals';
+import landingMarketingImage from '../assets/images/landing/landing-marketing.jpg';
 import type { CalendarEvent, Class, Course, Evaluation, Filiere, Grade, Student, Subject } from '../types';
 import './Dashboard.css';
 
@@ -69,6 +77,9 @@ export default function Dashboard() {
   const [barsGrown, setBarsGrown] = useState(false);
   const [now, setNow] = useState(() => new Date());
   const [readerIndex, setReaderIndex] = useState<number | null>(null);
+  const [miReaderIndex, setMiReaderIndex] = useState<number | null>(null);
+  const [mktReaderIndex, setMktReaderIndex] = useState<number | null>(null);
+  const [fcmeReaderIndex, setFcmeReaderIndex] = useState<number | null>(null);
   const { ref: chartRef, inView: chartInView } = useInViewOnce<HTMLDivElement>();
   const { viewed, markViewed } = useViewedChapters();
 
@@ -168,7 +179,13 @@ export default function Dashboard() {
 
   const visibleChapters = useMemo(() => {
     const term = chapterSearch.trim().toLowerCase();
-    const list = term ? tciChapters.filter((c) => c.title.toLowerCase().includes(term)) : tciChapters;
+    const combined = [
+      ...tciChapters.map((c) => ({ ...c, _course: 'tci' as const })),
+      ...miChapters.map((c) => ({ ...c, _course: 'mi' as const })),
+      ...marketingChapters.map((c) => ({ ...c, _course: 'mkt' as const })),
+      ...fcmeChapters.map((c) => ({ ...c, _course: 'fcme' as const })),
+    ];
+    const list = term ? combined.filter((c) => c.title.toLowerCase().includes(term)) : combined;
     return list.slice(0, 4);
   }, [chapterSearch]);
 
@@ -288,18 +305,39 @@ export default function Dashboard() {
           />
         </div>
         <div className="dashboard-chapters-grid">
-          {visibleChapters.map((chapter, i) => (
-            <ChapterCard
-              key={chapter.id}
-              chapter={chapter}
-              viewed={viewed.has(chapter.id)}
-              index={i}
-              onOpen={() => {
-                markViewed(chapter.id);
-                setReaderIndex(chapter.number - 1);
-              }}
-            />
-          ))}
+          {visibleChapters.map((chapter, i) => {
+            const visual =
+              chapter._course === 'tci'
+                ? getChapterVisual(chapter.number)
+                : chapter._course === 'mi'
+                  ? getMiChapterVisual(chapter.number)
+                  : chapter._course === 'mkt'
+                    ? getMarketingChapterVisual(chapter.number)
+                    : getFcmeChapterVisual(chapter.number);
+            const casPosition =
+              chapter._course === 'tci'
+                ? tciChapters.filter((c) => c.level === chapter.level && c.kind === 'cas').findIndex((c) => c.id === chapter.id) + 1
+                : 0;
+            const label =
+              chapter.kind === 'chapitre' ? `Chapitre ${chapter.number}` : `Cas pratique ${casPosition}`;
+            return (
+              <ChapterCard
+                key={chapter.id}
+                chapter={chapter}
+                visual={visual}
+                label={label}
+                viewed={viewed.has(chapter.id)}
+                index={i}
+                onOpen={() => {
+                  markViewed(chapter.id);
+                  if (chapter._course === 'tci') setReaderIndex(chapter.number - 1);
+                  else if (chapter._course === 'mi') setMiReaderIndex(chapter.number - 1);
+                  else if (chapter._course === 'mkt') setMktReaderIndex(chapter.number - 1);
+                  else setFcmeReaderIndex(chapter.number - 1);
+                }}
+              />
+            );
+          })}
         </div>
         <button className="dashboard-panel-link dashboard-chapters-more" onClick={() => navigate('/subjects')}>
           Voir toutes mes matieres et chapitres →
@@ -570,6 +608,45 @@ export default function Dashboard() {
 
       {readerIndex !== null ? (
         <TeachingReader startIndex={readerIndex} onClose={() => setReaderIndex(null)} />
+      ) : null}
+
+      {miReaderIndex !== null ? (
+        <TeachingReader
+          startIndex={miReaderIndex}
+          onClose={() => setMiReaderIndex(null)}
+          chapters={miChapters}
+          courseTitle="Marketing International"
+          courseSubtitle={MI_COURSE_SUBTITLE}
+          sideImage={landingMarketingImage}
+          sideHeading="Marketing International"
+          sideText="Vendre et communiquer au-delà des frontières"
+        />
+      ) : null}
+
+      {mktReaderIndex !== null ? (
+        <TeachingReader
+          startIndex={mktReaderIndex}
+          onClose={() => setMktReaderIndex(null)}
+          chapters={marketingChapters}
+          courseTitle="Marketing"
+          courseSubtitle={MARKETING_COURSE_SUBTITLE}
+          sideImage={landingMarketingImage}
+          sideHeading="Marketing"
+          sideText="Comprendre le marché, créer et fidéliser la clientèle"
+        />
+      ) : null}
+
+      {fcmeReaderIndex !== null ? (
+        <TeachingReader
+          startIndex={fcmeReaderIndex}
+          onClose={() => setFcmeReaderIndex(null)}
+          chapters={fcmeChapters}
+          courseTitle="FCME"
+          courseSubtitle={FCME_COURSE_SUBTITLE}
+          sideImage={landingMarketingImage}
+          sideHeading="FCME"
+          sideText="Fondements, concepts, marketing et étude du marché"
+        />
       ) : null}
     </div>
   );

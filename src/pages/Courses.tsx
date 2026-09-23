@@ -15,6 +15,14 @@ import PdfFlipViewer from '../components/PdfFlipViewer';
 import TeachingReader from '../components/TeachingReader';
 import CourseReader from '../components/CourseReader';
 import { tciChapters, TCI_COURSE_SUBTITLE_1, TCI_COURSE_SUBTITLE_2, TCI_COURSE_TITLE } from '../data/tciCourse';
+import { getChapterVisual } from '../data/chapterVisuals';
+import { miChapters, MI_COURSE_SUBTITLE, MI_COURSE_TITLE } from '../data/miCourse';
+import { getMiChapterVisual } from '../data/miChapterVisuals';
+import { marketingChapters, MARKETING_COURSE_SUBTITLE, MARKETING_COURSE_TITLE } from '../data/marketingCourse';
+import { getMarketingChapterVisual } from '../data/marketingChapterVisuals';
+import { fcmeChapters, FCME_COURSE_SUBTITLE, FCME_COURSE_TITLE } from '../data/fcmeCourse';
+import { getFcmeChapterVisual } from '../data/fcmeChapterVisuals';
+import landingMarketingImage from '../assets/images/landing/landing-marketing.jpg';
 import type { Course, CourseAttachment, Subject } from '../types';
 import './Courses.css';
 
@@ -27,6 +35,9 @@ export default function Courses() {
   const { viewed, markViewed } = useViewedChapters();
   const [teachingLevel, setTeachingLevel] = useState<1 | 2>(1);
   const visibleTciChapters = useMemo(() => tciChapters.filter((c) => c.level === teachingLevel), [teachingLevel]);
+  const [miReaderIndex, setMiReaderIndex] = useState<number | null>(null);
+  const [mktReaderIndex, setMktReaderIndex] = useState<number | null>(null);
+  const [fcmeReaderIndex, setFcmeReaderIndex] = useState<number | null>(null);
 
   const [showForm, setShowForm] = useState(false);
   const [titre, setTitre] = useState('');
@@ -300,15 +311,92 @@ export default function Courses() {
           </button>
         </div>
         <div className="courses-teaching-grid">
-          {visibleTciChapters.map((chapter, i) => (
+          {visibleTciChapters.map((chapter, i) => {
+            const visual = getChapterVisual(chapter.number);
+            const casPosition =
+              tciChapters.filter((c) => c.level === chapter.level && c.kind === 'cas').findIndex((c) => c.id === chapter.id) + 1;
+            const label = chapter.kind === 'chapitre' ? `Chapitre ${chapter.number}` : `Cas pratique ${casPosition}`;
+            return (
+              <ChapterCard
+                key={chapter.id}
+                chapter={chapter}
+                visual={visual}
+                label={label}
+                viewed={viewed.has(chapter.id)}
+                index={i}
+                onOpen={() => {
+                  markViewed(chapter.id);
+                  setReaderIndex(chapter.number - 1);
+                }}
+              />
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="courses-teaching-card">
+        <div className="courses-teaching-header">
+          <h3 className="courses-teaching-title">Mon enseignement — {MI_COURSE_TITLE}</h3>
+          <p className="courses-teaching-subtitle">{MI_COURSE_SUBTITLE}</p>
+        </div>
+        <div className="courses-teaching-grid">
+          {miChapters.map((chapter, i) => (
             <ChapterCard
               key={chapter.id}
               chapter={chapter}
+              visual={getMiChapterVisual(chapter.number)}
+              label={`Chapitre ${chapter.number}`}
               viewed={viewed.has(chapter.id)}
               index={i}
               onOpen={() => {
                 markViewed(chapter.id);
-                setReaderIndex(chapter.number - 1);
+                setMiReaderIndex(chapter.number - 1);
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="courses-teaching-card">
+        <div className="courses-teaching-header">
+          <h3 className="courses-teaching-title">Mon enseignement — {MARKETING_COURSE_TITLE}</h3>
+          <p className="courses-teaching-subtitle">{MARKETING_COURSE_SUBTITLE}</p>
+        </div>
+        <div className="courses-teaching-grid">
+          {marketingChapters.map((chapter, i) => (
+            <ChapterCard
+              key={chapter.id}
+              chapter={chapter}
+              visual={getMarketingChapterVisual(chapter.number)}
+              label={`Chapitre ${chapter.number}`}
+              viewed={viewed.has(chapter.id)}
+              index={i}
+              onOpen={() => {
+                markViewed(chapter.id);
+                setMktReaderIndex(chapter.number - 1);
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="courses-teaching-card">
+        <div className="courses-teaching-header">
+          <h3 className="courses-teaching-title">Mon enseignement — {FCME_COURSE_TITLE}</h3>
+          <p className="courses-teaching-subtitle">{FCME_COURSE_SUBTITLE}</p>
+        </div>
+        <div className="courses-teaching-grid">
+          {fcmeChapters.map((chapter, i) => (
+            <ChapterCard
+              key={chapter.id}
+              chapter={chapter}
+              visual={getFcmeChapterVisual(chapter.number)}
+              label={`Chapitre ${chapter.number}`}
+              viewed={viewed.has(chapter.id)}
+              index={i}
+              onOpen={() => {
+                markViewed(chapter.id);
+                setFcmeReaderIndex(chapter.number - 1);
               }}
             />
           ))}
@@ -434,6 +522,45 @@ export default function Courses() {
 
       {readerIndex !== null ? (
         <TeachingReader startIndex={readerIndex} onClose={() => setReaderIndex(null)} />
+      ) : null}
+
+      {miReaderIndex !== null ? (
+        <TeachingReader
+          startIndex={miReaderIndex}
+          onClose={() => setMiReaderIndex(null)}
+          chapters={miChapters}
+          courseTitle={MI_COURSE_TITLE}
+          courseSubtitle={MI_COURSE_SUBTITLE}
+          sideImage={landingMarketingImage}
+          sideHeading="Marketing International"
+          sideText="Vendre et communiquer au-delà des frontières"
+        />
+      ) : null}
+
+      {mktReaderIndex !== null ? (
+        <TeachingReader
+          startIndex={mktReaderIndex}
+          onClose={() => setMktReaderIndex(null)}
+          chapters={marketingChapters}
+          courseTitle={MARKETING_COURSE_TITLE}
+          courseSubtitle={MARKETING_COURSE_SUBTITLE}
+          sideImage={landingMarketingImage}
+          sideHeading="Marketing"
+          sideText="Comprendre le marché, créer et fidéliser la clientèle"
+        />
+      ) : null}
+
+      {fcmeReaderIndex !== null ? (
+        <TeachingReader
+          startIndex={fcmeReaderIndex}
+          onClose={() => setFcmeReaderIndex(null)}
+          chapters={fcmeChapters}
+          courseTitle={FCME_COURSE_TITLE}
+          courseSubtitle={FCME_COURSE_SUBTITLE}
+          sideImage={landingMarketingImage}
+          sideHeading="FCME"
+          sideText="Fondements, concepts, marketing et étude du marché"
+        />
       ) : null}
     </div>
   );
