@@ -9,6 +9,7 @@ import { getSubjectExpertise } from '../utils/subjectExpertise';
 import { tciChapters, TCI_COURSE_SUBTITLE_1, TCI_COURSE_SUBTITLE_2 } from '../data/tciCourse';
 import { miChapters, MI_COURSE_SUBTITLE } from '../data/miCourse';
 import { marketingChapters, MARKETING_COURSE_SUBTITLE, MARKETING_COURSE_TITLE } from '../data/marketingCourse';
+import { marketing2Chapters, MARKETING2_COURSE_SUBTITLE } from '../data/marketing2Course';
 import { fcmeChapters, FCME_COURSE_SUBTITLE, FCME_COURSE_TITLE } from '../data/fcmeCourse';
 import landingMarketingImage from '../assets/images/landing/landing-marketing.jpg';
 import Button from '../components/Button';
@@ -58,6 +59,7 @@ export default function Subjects() {
   const [miReaderIndex, setMiReaderIndex] = useState<number | null>(null);
   const [mktReaderIndex, setMktReaderIndex] = useState<number | null>(null);
   const [fcmeReaderIndex, setFcmeReaderIndex] = useState<number | null>(null);
+  const [mkt2ReaderIndex, setMkt2ReaderIndex] = useState<number | null>(null);
   const loading = loadingSubjects || loadingClasses || loadingFilieres;
 
   const [showForm, setShowForm] = useState(false);
@@ -536,6 +538,26 @@ export default function Subjects() {
                   </div>
                 ) : null}
 
+                {isMarketing ? (
+                  <div className="subject-teaching">
+                    <div className="subject-teaching-header">
+                      <GraduationCap size={15} />
+                      <span>Mon enseignement — {MARKETING_COURSE_TITLE} ({MARKETING2_COURSE_SUBTITLE})</span>
+                    </div>
+                    <div className="subject-teaching-grid">
+                      {marketing2Chapters.map((chapter, ci) => (
+                        <button
+                          key={chapter.id}
+                          className="subject-teaching-chip"
+                          onClick={() => setMkt2ReaderIndex(chapter.number - 1)}
+                        >
+                          {`Ch. ${ci + 1}`}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+
                 {isFcme ? (
                   <div className="subject-teaching">
                     <div className="subject-teaching-header">
@@ -588,6 +610,19 @@ export default function Subjects() {
           sideImage={landingMarketingImage}
           sideHeading="Marketing"
           sideText="Comprendre le marché, créer et fidéliser la clientèle"
+        />
+      ) : null}
+
+      {mkt2ReaderIndex !== null ? (
+        <TeachingReader
+          startIndex={mkt2ReaderIndex}
+          onClose={() => setMkt2ReaderIndex(null)}
+          chapters={marketing2Chapters}
+          courseTitle="Marketing"
+          courseSubtitle={MARKETING2_COURSE_SUBTITLE}
+          sideImage={landingMarketingImage}
+          sideHeading="Marketing"
+          sideText="Commerce international et relation clientèle"
         />
       ) : null}
 

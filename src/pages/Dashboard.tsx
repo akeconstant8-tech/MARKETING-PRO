@@ -39,6 +39,8 @@ import { miChapters, MI_COURSE_SUBTITLE } from '../data/miCourse';
 import { getMiChapterVisual } from '../data/miChapterVisuals';
 import { marketingChapters, MARKETING_COURSE_SUBTITLE } from '../data/marketingCourse';
 import { getMarketingChapterVisual } from '../data/marketingChapterVisuals';
+import { marketing2Chapters, MARKETING2_COURSE_SUBTITLE } from '../data/marketing2Course';
+import { getMarketing2ChapterVisual } from '../data/marketing2ChapterVisuals';
 import { fcmeChapters, FCME_COURSE_SUBTITLE } from '../data/fcmeCourse';
 import { getFcmeChapterVisual } from '../data/fcmeChapterVisuals';
 import landingMarketingImage from '../assets/images/landing/landing-marketing.jpg';
@@ -80,6 +82,7 @@ export default function Dashboard() {
   const [miReaderIndex, setMiReaderIndex] = useState<number | null>(null);
   const [mktReaderIndex, setMktReaderIndex] = useState<number | null>(null);
   const [fcmeReaderIndex, setFcmeReaderIndex] = useState<number | null>(null);
+  const [mkt2ReaderIndex, setMkt2ReaderIndex] = useState<number | null>(null);
   const { ref: chartRef, inView: chartInView } = useInViewOnce<HTMLDivElement>();
   const { viewed, markViewed } = useViewedChapters();
 
@@ -183,6 +186,7 @@ export default function Dashboard() {
       ...tciChapters.map((c) => ({ ...c, _course: 'tci' as const })),
       ...miChapters.map((c) => ({ ...c, _course: 'mi' as const })),
       ...marketingChapters.map((c) => ({ ...c, _course: 'mkt' as const })),
+      ...marketing2Chapters.map((c) => ({ ...c, _course: 'mkt2' as const })),
       ...fcmeChapters.map((c) => ({ ...c, _course: 'fcme' as const })),
     ];
     const list = term ? combined.filter((c) => c.title.toLowerCase().includes(term)) : combined;
@@ -313,7 +317,9 @@ export default function Dashboard() {
                   ? getMiChapterVisual(chapter.number)
                   : chapter._course === 'mkt'
                     ? getMarketingChapterVisual(chapter.number)
-                    : getFcmeChapterVisual(chapter.number);
+                    : chapter._course === 'mkt2'
+                      ? getMarketing2ChapterVisual(chapter.number)
+                      : getFcmeChapterVisual(chapter.number);
             const casPosition =
               chapter._course === 'tci'
                 ? tciChapters.filter((c) => c.level === chapter.level && c.kind === 'cas').findIndex((c) => c.id === chapter.id) + 1
@@ -333,6 +339,7 @@ export default function Dashboard() {
                   if (chapter._course === 'tci') setReaderIndex(chapter.number - 1);
                   else if (chapter._course === 'mi') setMiReaderIndex(chapter.number - 1);
                   else if (chapter._course === 'mkt') setMktReaderIndex(chapter.number - 1);
+                  else if (chapter._course === 'mkt2') setMkt2ReaderIndex(chapter.number - 1);
                   else setFcmeReaderIndex(chapter.number - 1);
                 }}
               />
@@ -633,6 +640,19 @@ export default function Dashboard() {
           sideImage={landingMarketingImage}
           sideHeading="Marketing"
           sideText="Comprendre le marché, créer et fidéliser la clientèle"
+        />
+      ) : null}
+
+      {mkt2ReaderIndex !== null ? (
+        <TeachingReader
+          startIndex={mkt2ReaderIndex}
+          onClose={() => setMkt2ReaderIndex(null)}
+          chapters={marketing2Chapters}
+          courseTitle="Marketing"
+          courseSubtitle={MARKETING2_COURSE_SUBTITLE}
+          sideImage={landingMarketingImage}
+          sideHeading="Marketing"
+          sideText="Commerce international et relation clientèle"
         />
       ) : null}
 

@@ -20,6 +20,8 @@ import { miChapters, MI_COURSE_SUBTITLE, MI_COURSE_TITLE } from '../data/miCours
 import { getMiChapterVisual } from '../data/miChapterVisuals';
 import { marketingChapters, MARKETING_COURSE_SUBTITLE, MARKETING_COURSE_TITLE } from '../data/marketingCourse';
 import { getMarketingChapterVisual } from '../data/marketingChapterVisuals';
+import { marketing2Chapters, MARKETING2_COURSE_SUBTITLE, MARKETING2_COURSE_TITLE } from '../data/marketing2Course';
+import { getMarketing2ChapterVisual } from '../data/marketing2ChapterVisuals';
 import { fcmeChapters, FCME_COURSE_SUBTITLE, FCME_COURSE_TITLE } from '../data/fcmeCourse';
 import { getFcmeChapterVisual } from '../data/fcmeChapterVisuals';
 import landingMarketingImage from '../assets/images/landing/landing-marketing.jpg';
@@ -38,6 +40,7 @@ export default function Courses() {
   const [miReaderIndex, setMiReaderIndex] = useState<number | null>(null);
   const [mktReaderIndex, setMktReaderIndex] = useState<number | null>(null);
   const [fcmeReaderIndex, setFcmeReaderIndex] = useState<number | null>(null);
+  const [mkt2ReaderIndex, setMkt2ReaderIndex] = useState<number | null>(null);
 
   const [showForm, setShowForm] = useState(false);
   const [titre, setTitre] = useState('');
@@ -382,6 +385,29 @@ export default function Courses() {
 
       <div className="courses-teaching-card">
         <div className="courses-teaching-header">
+          <h3 className="courses-teaching-title">Mon enseignement — {MARKETING2_COURSE_TITLE}</h3>
+          <p className="courses-teaching-subtitle">{MARKETING2_COURSE_SUBTITLE}</p>
+        </div>
+        <div className="courses-teaching-grid">
+          {marketing2Chapters.map((chapter, i) => (
+            <ChapterCard
+              key={chapter.id}
+              chapter={chapter}
+              visual={getMarketing2ChapterVisual(chapter.number)}
+              label={`Chapitre ${chapter.number}`}
+              viewed={viewed.has(chapter.id)}
+              index={i}
+              onOpen={() => {
+                markViewed(chapter.id);
+                setMkt2ReaderIndex(chapter.number - 1);
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="courses-teaching-card">
+        <div className="courses-teaching-header">
           <h3 className="courses-teaching-title">Mon enseignement — {FCME_COURSE_TITLE}</h3>
           <p className="courses-teaching-subtitle">{FCME_COURSE_SUBTITLE}</p>
         </div>
@@ -547,6 +573,19 @@ export default function Courses() {
           sideImage={landingMarketingImage}
           sideHeading="Marketing"
           sideText="Comprendre le marché, créer et fidéliser la clientèle"
+        />
+      ) : null}
+
+      {mkt2ReaderIndex !== null ? (
+        <TeachingReader
+          startIndex={mkt2ReaderIndex}
+          onClose={() => setMkt2ReaderIndex(null)}
+          chapters={marketing2Chapters}
+          courseTitle={MARKETING2_COURSE_TITLE}
+          courseSubtitle={MARKETING2_COURSE_SUBTITLE}
+          sideImage={landingMarketingImage}
+          sideHeading="Marketing"
+          sideText="Commerce international et relation clientèle"
         />
       ) : null}
 
