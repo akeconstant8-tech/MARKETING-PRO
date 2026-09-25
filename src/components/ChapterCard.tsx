@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Play } from 'lucide-react';
 import type { ChapterVisual } from '../data/chapterVisuals';
 import TiltCard from './TiltCard';
 import './ChapterCard.css';
@@ -48,8 +48,13 @@ export default function ChapterCard({ chapter, visual, label, viewed, onOpen, in
       <div className="chapter-card-body">
         <span className={`chapter-card-kind chapter-card-kind-${visual.tone}`}>{label}</span>
         <h4 className="chapter-card-title">{chapter.title}</h4>
+        <div className="chapter-card-progress" aria-label={viewed ? 'Consulté' : 'Non consulté'}>
+          <div className={`chapter-card-progress-bar chapter-card-progress-${visual.tone}`} style={{ width: viewed ? '100%' : '0%' }} />
+        </div>
+        <span className="chapter-card-progress-label">{viewed ? 'Consulté' : 'À découvrir'}</span>
         <button className={`chapter-card-link chapter-card-link-${visual.tone}`} onClick={onOpen}>
-          Voir →
+          <Play size={12} fill="currentColor" />
+          Voir le cours
         </button>
       </div>
     </TiltCard>

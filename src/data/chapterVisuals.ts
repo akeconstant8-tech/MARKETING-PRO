@@ -41,6 +41,8 @@ import imgCasCaveYop from '../assets/images/chapters/commerce-cas-caveyop.jpg';
 import imgCasVictoire from '../assets/images/chapters/commerce-cas-victoire.jpg';
 import imgCasMage from '../assets/images/chapters/commerce-cas-mage.jpg';
 
+import { TCI2_CAS_IMAGES } from './courseImages';
+
 export interface ChapterVisual {
   icon: LucideIcon;
   tone: string;
@@ -79,14 +81,14 @@ export const CHAPTER_VISUALS: Record<number, ChapterVisual> = {
   20: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[0], image: imgCasIsrael },
   21: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[1], image: imgCasYeshua },
   // Cas pratiques de 2e année, dans l'ordre du support de cours (p. 69-80).
-  // Yegossoum, Gloire, Lagoon Bleu et Ets Adjé n'ont pas encore de photo dédiée.
-  22: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[2] },
+  // Yegossoum, Gloire, Lagoon Bleu et Ets Adjé : illustrations vectorielles (pas de photo dédiée).
+  22: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[2], image: TCI2_CAS_IMAGES[22] },
   23: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[3], image: imgCasCaveYop },
   24: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[4], image: imgCasVictoire },
-  25: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[0] },
+  25: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[0], image: TCI2_CAS_IMAGES[25] },
   26: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[1], image: imgCasMage },
-  27: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[2] },
-  28: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[3] },
+  27: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[2], image: TCI2_CAS_IMAGES[27] },
+  28: { icon: Briefcase, tone: CAS_PRATIQUE_TONES[3], image: TCI2_CAS_IMAGES[28] },
 };
 
 export function getChapterVisual(chapterNumber: number): ChapterVisual {

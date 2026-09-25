@@ -367,3 +367,105 @@
     z-index: 99;
   }
 }
+
+/* ── Thème vert profond + or (maquette Marketing Pro) ─────────────────────
+   Surcharges uniquement : le composant Logo et ses images ne sont pas
+   modifiés — seule la couleur du texte du logo est adaptée au fond sombre. */
+.sidebar {
+  background-color: #0a2f22;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 900' preserveAspectRatio='none'><path d='M-10 640 C70 560 150 760 270 660' fill='none' stroke='%23d4a72c' stroke-opacity='.32' stroke-width='1.6'/><path d='M-10 690 C80 610 160 810 270 710' fill='none' stroke='%23d4a72c' stroke-opacity='.22' stroke-width='1.2'/><path d='M-10 740 C90 660 170 860 270 760' fill='none' stroke='%23d4a72c' stroke-opacity='.14' stroke-width='1'/></svg>"),
+    linear-gradient(180deg, #0d4630 0%, #0a2f22 55%, #06201a 100%);
+  background-size: 100% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  border-right: none;
+  box-shadow: 4px 0 24px rgba(6, 32, 26, 0.22);
+}
+
+.sidebar-header {
+  background: rgba(3, 20, 14, 0.38);
+  border-bottom: 1px solid rgba(212, 167, 44, 0.28);
+  border-bottom-right-radius: 26px;
+}
+
+.sidebar .logo-wordmark {
+  color: #fff;
+}
+
+.sidebar .logo-tagline {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.sidebar-close {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.sidebar-close:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-link {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.sidebar-active-indicator {
+  background: linear-gradient(120deg, #f1d47a 0%, #d4a72c 55%, #b8860b 100%);
+  box-shadow: 0 6px 18px rgba(212, 167, 44, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.sidebar-link-active,
+.sidebar-link-active:hover {
+  color: #10281c;
+  font-weight: 700;
+}
+
+.sidebar-motivation {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(212, 167, 44, 0.35);
+}
+
+.sidebar-motivation svg {
+  color: #e8c45a;
+}
+
+.sidebar-motivation p {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.sidebar-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-avatar {
+  background: linear-gradient(135deg, #e8c45a, #b8860b);
+  color: #10281c;
+}
+
+.sidebar-profile-name {
+  color: #fff;
+}
+
+.sidebar-profile-email {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.sidebar-logout {
+  color: #fecaca;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.sidebar-logout:hover {
+  background: rgba(248, 113, 113, 0.14);
+  border-color: rgba(248, 113, 113, 0.6);
+}
+
+.sidebar::-webkit-scrollbar-thumb,
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+}

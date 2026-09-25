@@ -350,3 +350,46 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ── En-tête façon maquette Marketing Pro ─────────────────────────────── */
+.courses-page {
+  max-width: 1240px;
+}
+
+.courses-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.courses-title-icon {
+  color: #166534;
+}
+
+[data-theme='dark'] .courses-title-icon {
+  color: #4ade80;
+}
+
+.courses-header > button {
+  background: linear-gradient(135deg, #166534, #15803d);
+  border: none;
+  color: #fff;
+  border-radius: var(--radius-md);
+  padding-inline: 22px;
+  box-shadow: 0 10px 22px rgba(21, 128, 61, 0.32);
+}
+
+.courses-header > button:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.courses-teaching-card {
+  border-radius: var(--radius-lg);
+}
+
+.courses-teaching-title {
+  font-size: 17px;
+  font-weight: 800;
+}

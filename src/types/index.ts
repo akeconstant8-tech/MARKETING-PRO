@@ -97,6 +97,9 @@ export interface Course {
   resume?: string;
   references?: string;
   attachments?: CourseAttachment[];
+  /** Image déjà associée au cours : si présente, elle est affichée telle quelle
+   * et aucune illustration n'est générée. */
+  imageUrl?: string;
   createdAt?: string;
 }
 

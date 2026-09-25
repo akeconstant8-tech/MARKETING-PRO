@@ -13,6 +13,7 @@ import {
   PenSquare,
   Settings as SettingsIcon,
   Sparkles,
+  ThumbsUp,
   TrendingUp,
   UserPlus,
   Users,
@@ -31,6 +32,7 @@ import ChapterCard from '../components/ChapterCard';
 import DonutChart from '../components/DonutChart';
 import TrendChart from '../components/TrendChart';
 import TeachingReader from '../components/TeachingReader';
+import { searchEntities, type SearchResult } from '../utils/globalSearch';
 import { useInViewOnce } from '../hooks/useInViewOnce';
 import { normalizeNote } from '../utils/calculations';
 import { tciChapters } from '../data/tciCourse';
@@ -43,18 +45,12 @@ import { marketing2Chapters, MARKETING2_COURSE_SUBTITLE } from '../data/marketin
 import { getMarketing2ChapterVisual } from '../data/marketing2ChapterVisuals';
 import { fcmeChapters, FCME_COURSE_SUBTITLE } from '../data/fcmeCourse';
 import { getFcmeChapterVisual } from '../data/fcmeChapterVisuals';
+import GraduationCapArt from '../components/GraduationCapArt';
 import { fcme2Chapters, FCME2_COURSE_SUBTITLE } from '../data/fcme2Course';
 import { getFcme2ChapterVisual } from '../data/fcme2ChapterVisuals';
 import landingMarketingImage from '../assets/images/landing/landing-marketing.jpg';
 import type { CalendarEvent, Class, Course, Evaluation, Filiere, Grade, Student, Subject } from '../types';
 import './Dashboard.css';
-
-interface SearchResult {
-  id: string;
-  label: string;
-  kind: 'Etudiant' | 'Classe' | 'Matiere' | 'Cours';
-  to: string;
-}
 
 const MONTH_LABELS = ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aout', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -205,55 +201,32 @@ export default function Dashboard() {
     return () => cancelAnimationFrame(id);
   }, [loadingStats]);
 
-  const searchResults: SearchResult[] = useMemo(() => {
-    const term = search.trim().toLowerCase();
-    if (!term) return [];
-
-    const results: SearchResult[] = [];
-    for (const s of students) {
-      if (`${s.prenom} ${s.nom}`.toLowerCase().includes(term)) {
-        results.push({ id: `student-${s.id}`, label: `${s.prenom} ${s.nom}`, kind: 'Etudiant', to: '/students' });
-      }
-    }
-    for (const c of classes) {
-      if (c.nom.toLowerCase().includes(term)) {
-        results.push({ id: `class-${c.id}`, label: c.nom, kind: 'Classe', to: '/classes' });
-      }
-    }
-    for (const s of subjects) {
-      if (s.nom.toLowerCase().includes(term)) {
-        results.push({ id: `subject-${s.id}`, label: s.nom, kind: 'Matiere', to: '/subjects' });
-      }
-    }
-    for (const c of courses) {
-      if (c.titre.toLowerCase().includes(term)) {
-        results.push({ id: `course-${c.id}`, label: c.titre, kind: 'Cours', to: '/courses' });
-      }
-    }
-    return results.slice(0, 8);
-  }, [search, students, classes, subjects, courses]);
+  const searchResults: SearchResult[] = useMemo(
+    () => searchEntities(search, { students, classes, subjects, courses }),
+    [search, students, classes, subjects, courses]
+  );
 
   const dateLabel = now.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
   return (
     <div className="dashboard fade-in-up">
-      <div className="dashboard-header">
-        <div>
-          <BlurText text="Tableau de bord 👋" className="dashboard-greeting" as="h2" />
-          <p className="dashboard-subtitle">
-            Bienvenue sur Marketing Pro. Gerez facilement votre enseignement.
-          </p>
+      <div className="dashboard-welcome">
+        <div className="dashboard-welcome-badge">
+          <ThumbsUp size={30} />
         </div>
-
-        <div className="dashboard-header-cards">
-          <div className="dashboard-info-card">
-            <CalendarClock size={18} />
-            <div>
-              <span className="dashboard-info-primary">
-                {dateLabel.charAt(0).toUpperCase() + dateLabel.slice(1)}
-              </span>
-              <span className="dashboard-info-secondary">Bonne journee, {firstName ?? 'Professeur'} !</span>
-            </div>
+        <div className="dashboard-welcome-text">
+          <BlurText text={`Bienvenue, ${firstName ?? 'Professeur'} ! 👋`} className="dashboard-greeting" as="h2" />
+          <p className="dashboard-subtitle">
+            Gerez vos cours, suivez vos etudiants et ameliorez vos performances.
+          </p>
+          <p className="dashboard-welcome-quote">« La connaissance bien transmise construit des generations. »</p>
+        </div>
+        <GraduationCapArt />
+        <div className="dashboard-info-card">
+          <CalendarClock size={18} />
+          <div>
+            <span className="dashboard-info-primary">{dateLabel.charAt(0).toUpperCase() + dateLabel.slice(1)}</span>
+            <span className="dashboard-info-secondary">Bonne journee !</span>
           </div>
         </div>
       </div>

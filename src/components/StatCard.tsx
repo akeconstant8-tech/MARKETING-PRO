@@ -31,7 +31,7 @@ export default function StatCard({ icon: Icon, label, value, accent, tone, to, i
   }
 
   return (
-    <TiltCard className={`stat-card fade-in-up ${accent ? 'stat-card-accent' : ''}`} style={style} maxTilt={8}>
+    <TiltCard className={`stat-card fade-in-up ${accent ? 'stat-card-accent' : ''} ${tone ? `stat-card-${tone}` : ''}`} style={style} maxTilt={8}>
       <div className="stat-card-top">
         <div className={`stat-icon ${toneClass}`}>
           <Icon size={20} color={accent ? '#fff' : undefined} />

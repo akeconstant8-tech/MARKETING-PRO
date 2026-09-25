@@ -157,3 +157,87 @@
 .stat-card-accent .stat-label {
   color: var(--color-accent-light);
 }
+
+/* ── Cartes pastel + bouton d'accès teinté (maquette Marketing Pro) ─────── */
+.stat-card-blue {
+  background: linear-gradient(135deg, #eef5ff, #e1edff);
+  border-color: rgba(37, 99, 235, 0.16);
+}
+
+.stat-card-green {
+  background: linear-gradient(135deg, #ecf9f1, #dcf3e6);
+  border-color: rgba(22, 163, 74, 0.18);
+}
+
+.stat-card-purple {
+  background: linear-gradient(135deg, #f5eefe, #ebdefc);
+  border-color: rgba(147, 51, 234, 0.16);
+}
+
+.stat-card-orange {
+  background: linear-gradient(135deg, #fff5e8, #ffe9d0);
+  border-color: rgba(234, 88, 12, 0.18);
+}
+
+.stat-card-blue .stat-card-goto {
+  background: #2563eb;
+  color: #fff;
+}
+
+.stat-card-green .stat-card-goto {
+  background: #16a34a;
+  color: #fff;
+}
+
+.stat-card-purple .stat-card-goto {
+  background: #9333ea;
+  color: #fff;
+}
+
+.stat-card-orange .stat-card-goto {
+  background: #ea580c;
+  color: #fff;
+}
+
+.stat-card-blue .stat-card-goto:hover,
+.stat-card-green .stat-card-goto:hover,
+.stat-card-purple .stat-card-goto:hover,
+.stat-card-orange .stat-card-goto:hover {
+  filter: brightness(1.1);
+  color: #fff;
+}
+
+.stat-card-blue .stat-value,
+.stat-card-green .stat-value,
+.stat-card-purple .stat-value,
+.stat-card-orange .stat-value {
+  color: #0f1c2e;
+}
+
+.stat-card-blue .stat-label,
+.stat-card-green .stat-label,
+.stat-card-purple .stat-label,
+.stat-card-orange .stat-label {
+  color: #475569;
+}
+
+[data-theme='dark'] .stat-card-blue,
+[data-theme='dark'] .stat-card-green,
+[data-theme='dark'] .stat-card-purple,
+[data-theme='dark'] .stat-card-orange {
+  background: var(--card-surface);
+}
+
+[data-theme='dark'] .stat-card-blue .stat-value,
+[data-theme='dark'] .stat-card-green .stat-value,
+[data-theme='dark'] .stat-card-purple .stat-value,
+[data-theme='dark'] .stat-card-orange .stat-value {
+  color: var(--color-text);
+}
+
+[data-theme='dark'] .stat-card-blue .stat-label,
+[data-theme='dark'] .stat-card-green .stat-label,
+[data-theme='dark'] .stat-card-purple .stat-label,
+[data-theme='dark'] .stat-card-orange .stat-label {
+  color: var(--color-text-secondary);
+}

@@ -675,3 +675,102 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Bandeau de bienvenue (maquette Marketing Pro) ─────────────────────── */
+.dashboard-welcome {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding: 18px 24px;
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 78% 20%, rgba(255, 255, 255, 0.75), transparent 45%),
+    linear-gradient(100deg, #e8f7ee 0%, #d3efe0 55%, #bfe6d1 100%);
+  border: 1px solid rgba(22, 101, 52, 0.14);
+  box-shadow: 0 10px 28px rgba(22, 101, 52, 0.1);
+  overflow: hidden;
+}
+
+.dashboard-welcome-badge {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: linear-gradient(135deg, #22c55e, #15803d);
+  box-shadow: 0 10px 22px rgba(21, 128, 61, 0.35);
+}
+
+.dashboard-welcome-text {
+  flex: 1;
+  min-width: 240px;
+}
+
+.dashboard-welcome .dashboard-greeting {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0b2a1c;
+}
+
+.dashboard-welcome .dashboard-subtitle {
+  font-style: normal;
+  color: #3f5a4c;
+}
+
+.dashboard-welcome-quote {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 2px solid #d4a72c;
+  display: inline-block;
+  font-size: 12.5px;
+  font-style: italic;
+  color: #5b6f63;
+}
+
+.graduation-cap-art {
+  width: 260px;
+  height: auto;
+  flex-shrink: 0;
+  filter: drop-shadow(0 10px 14px rgba(15, 28, 46, 0.22));
+}
+
+.dashboard-welcome .dashboard-info-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow-sm);
+  color: #166534;
+}
+
+[data-theme='dark'] .dashboard-welcome {
+  background:
+    radial-gradient(circle at 78% 20%, rgba(255, 255, 255, 0.06), transparent 45%),
+    linear-gradient(100deg, #0f2e22 0%, #0c3a29 55%, #0a4a32 100%);
+  border-color: rgba(212, 167, 44, 0.25);
+}
+
+[data-theme='dark'] .dashboard-welcome .dashboard-greeting {
+  color: #f2f5f4;
+}
+
+[data-theme='dark'] .dashboard-welcome .dashboard-subtitle,
+[data-theme='dark'] .dashboard-welcome-quote {
+  color: #b7d3c5;
+}
+
+[data-theme='dark'] .dashboard-welcome .dashboard-info-card {
+  background: rgba(16, 32, 30, 0.85);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #86efac;
+}
+
+@media (max-width: 767px) {
+  .graduation-cap-art {
+    display: none;
+  }
+}

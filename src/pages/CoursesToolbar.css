@@ -1,0 +1,137 @@
+/* Barre d'outils de la page Cours : onglets d'année, recherche, tri, filtre, affichage. */
+.courses-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.courses-year-tabs {
+  display: inline-flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.courses-year-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.courses-year-tab:hover {
+  border-color: #15803d;
+}
+
+.courses-year-tab-active {
+  background: linear-gradient(135deg, #166534, #15803d);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(21, 128, 61, 0.28);
+}
+
+.courses-toolbar-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 200px;
+  min-width: 180px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+  color: var(--color-text-secondary);
+}
+
+.courses-toolbar-search:focus-within {
+  border-color: #15803d;
+  box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.15);
+}
+
+.courses-toolbar-search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--color-text);
+}
+
+.courses-toolbar-select {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+  color: var(--color-text);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.courses-view-toggle {
+  display: inline-flex;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.courses-view-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 38px;
+  border: none;
+  background: var(--color-white);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.courses-view-btn-active {
+  background: #166534;
+  color: #fff;
+}
+
+/* Affichage en liste : une carte par ligne, photo à gauche. */
+.courses-page-list .courses-teaching-grid {
+  grid-template-columns: 1fr;
+}
+
+.courses-page-list .chapter-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.courses-page-list .chapter-card-photo {
+  width: 200px;
+  height: auto;
+  min-height: 110px;
+  flex-shrink: 0;
+}
+
+.courses-page-list .chapter-card-body {
+  justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .courses-page-list .chapter-card {
+    flex-direction: column;
+  }
+
+  .courses-page-list .chapter-card-photo {
+    width: 100%;
+    height: 112px;
+  }
+}

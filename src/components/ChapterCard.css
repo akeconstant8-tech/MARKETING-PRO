@@ -233,3 +233,43 @@
 .chapter-card-link-red {
   background: #dc2626;
 }
+
+/* ── Carte façon maquette : coins arrondis, progression, bouton « Voir le cours » ── */
+.chapter-card {
+  border-radius: var(--radius-lg);
+  box-shadow: 0 6px 18px rgba(15, 28, 46, 0.08);
+}
+
+.chapter-card-link {
+  gap: 7px;
+  height: 36px;
+}
+
+.chapter-card-progress {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.chapter-card-progress-bar {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  transition: width 500ms var(--ease-premium);
+}
+
+.chapter-card-progress-blue { background: #2563eb; }
+.chapter-card-progress-green { background: #16a34a; }
+.chapter-card-progress-purple { background: #9333ea; }
+.chapter-card-progress-orange { background: #ea580c; }
+.chapter-card-progress-teal { background: #0891b2; }
+.chapter-card-progress-indigo { background: #4f46e5; }
+.chapter-card-progress-red { background: #dc2626; }
+
+.chapter-card-progress-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}

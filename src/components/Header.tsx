@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Bell, Building2, Check, ChevronDown } from 'lucide-react';
 import Logo from './Logo';
 import HamburgerIcon from './HamburgerIcon';
+import HeaderSearch from './HeaderSearch';
 import { useAuth } from '../context/AuthContext';
 import { useEstablishment } from '../context/EstablishmentContext';
 import './Header.css';
@@ -53,6 +54,7 @@ export default function Header({ title, sidebarOpen, onToggleMenu }: Props) {
         <HamburgerIcon open={sidebarOpen} />
       </button>
       <h1 className="header-title">{title}</h1>
+      <HeaderSearch />
       <div className="header-logo">
         <Logo size="small" />
       </div>

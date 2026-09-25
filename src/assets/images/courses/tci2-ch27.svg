@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#155e75"/></linearGradient>
+  </defs>
+  <rect width="800" height="320" fill="url(#g)"/>
+  <circle cx="90" cy="30" r="150" fill="rgba(255,255,255,0.08)"/>
+  <circle cx="730" cy="300" r="190" fill="rgba(255,255,255,0.07)"/>
+  <circle cx="700" cy="40" r="60" fill="rgba(255,255,255,0.06)"/>
+  <g transform="translate(400 168) scale(1.15)">
+    <rect x="-140" y="-16" width="280" height="110" rx="18" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.96)" stroke-width="6"/>
+    <path d="M-120 24 q20 -16 40 0 t40 0 t40 0 t40 0 t40 0" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M-120 60 q20 -16 40 0 t40 0 t40 0 t40 0 t40 0" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M78 30V-56Q78 -92 112 -92M108 30V-56Q108 -92 112 -92" fill="none" stroke="rgba(255,255,255,0.96)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M78 -34H108M78 -8H108" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></g>
+</svg>

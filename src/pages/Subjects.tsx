@@ -13,6 +13,7 @@ import { marketing2Chapters, MARKETING2_COURSE_SUBTITLE } from '../data/marketin
 import { fcmeChapters, FCME_COURSE_SUBTITLE, FCME_COURSE_TITLE } from '../data/fcmeCourse';
 import { fcme2Chapters, FCME2_COURSE_SUBTITLE, FCME2_COURSE_TITLE } from '../data/fcme2Course';
 import landingMarketingImage from '../assets/images/landing/landing-marketing.jpg';
+import { getSubjectImage } from '../utils/subjectImage';
 import Button from '../components/Button';
 import StatCard from '../components/StatCard';
 import TiltCard from '../components/TiltCard';
@@ -405,6 +406,11 @@ export default function Subjects() {
                 style={{ '--stagger-index': i } as CSSProperties}
                 maxTilt={6}
               >
+                <div
+                  className="subject-card-banner"
+                  style={{ backgroundImage: `url("${getSubjectImage(subject.nom)}")` }}
+                  aria-hidden="true"
+                />
                 <div className="subject-card-header">
                   <div className="subject-card-icon">
                     <Icon size={20} />
