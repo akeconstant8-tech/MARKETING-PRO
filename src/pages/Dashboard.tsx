@@ -43,6 +43,8 @@ import { marketing2Chapters, MARKETING2_COURSE_SUBTITLE } from '../data/marketin
 import { getMarketing2ChapterVisual } from '../data/marketing2ChapterVisuals';
 import { fcmeChapters, FCME_COURSE_SUBTITLE } from '../data/fcmeCourse';
 import { getFcmeChapterVisual } from '../data/fcmeChapterVisuals';
+import { fcme2Chapters, FCME2_COURSE_SUBTITLE } from '../data/fcme2Course';
+import { getFcme2ChapterVisual } from '../data/fcme2ChapterVisuals';
 import landingMarketingImage from '../assets/images/landing/landing-marketing.jpg';
 import type { CalendarEvent, Class, Course, Evaluation, Filiere, Grade, Student, Subject } from '../types';
 import './Dashboard.css';
@@ -82,6 +84,7 @@ export default function Dashboard() {
   const [miReaderIndex, setMiReaderIndex] = useState<number | null>(null);
   const [mktReaderIndex, setMktReaderIndex] = useState<number | null>(null);
   const [fcmeReaderIndex, setFcmeReaderIndex] = useState<number | null>(null);
+  const [fcme2ReaderIndex, setFcme2ReaderIndex] = useState<number | null>(null);
   const [mkt2ReaderIndex, setMkt2ReaderIndex] = useState<number | null>(null);
   const { ref: chartRef, inView: chartInView } = useInViewOnce<HTMLDivElement>();
   const { viewed, markViewed } = useViewedChapters();
@@ -188,6 +191,7 @@ export default function Dashboard() {
       ...marketingChapters.map((c) => ({ ...c, _course: 'mkt' as const })),
       ...marketing2Chapters.map((c) => ({ ...c, _course: 'mkt2' as const })),
       ...fcmeChapters.map((c) => ({ ...c, _course: 'fcme' as const })),
+      ...fcme2Chapters.map((c) => ({ ...c, _course: 'fcme2' as const })),
     ];
     const list = term ? combined.filter((c) => c.title.toLowerCase().includes(term)) : combined;
     return list.slice(0, 4);
@@ -319,7 +323,9 @@ export default function Dashboard() {
                     ? getMarketingChapterVisual(chapter.number)
                     : chapter._course === 'mkt2'
                       ? getMarketing2ChapterVisual(chapter.number)
-                      : getFcmeChapterVisual(chapter.number);
+                      : chapter._course === 'fcme'
+                        ? getFcmeChapterVisual(chapter.number)
+                        : getFcme2ChapterVisual(chapter.number);
             const casPosition =
               chapter._course === 'tci'
                 ? tciChapters.filter((c) => c.level === chapter.level && c.kind === 'cas').findIndex((c) => c.id === chapter.id) + 1
@@ -340,7 +346,8 @@ export default function Dashboard() {
                   else if (chapter._course === 'mi') setMiReaderIndex(chapter.number - 1);
                   else if (chapter._course === 'mkt') setMktReaderIndex(chapter.number - 1);
                   else if (chapter._course === 'mkt2') setMkt2ReaderIndex(chapter.number - 1);
-                  else setFcmeReaderIndex(chapter.number - 1);
+                  else if (chapter._course === 'fcme') setFcmeReaderIndex(chapter.number - 1);
+                  else setFcme2ReaderIndex(chapter.number - 1);
                 }}
               />
             );
@@ -663,6 +670,19 @@ export default function Dashboard() {
           chapters={fcmeChapters}
           courseTitle="FCME"
           courseSubtitle={FCME_COURSE_SUBTITLE}
+          sideImage={landingMarketingImage}
+          sideHeading="FCME"
+          sideText="Fondements, concepts, marketing et étude du marché"
+        />
+      ) : null}
+
+      {fcme2ReaderIndex !== null ? (
+        <TeachingReader
+          startIndex={fcme2ReaderIndex}
+          onClose={() => setFcme2ReaderIndex(null)}
+          chapters={fcme2Chapters}
+          courseTitle="FCME"
+          courseSubtitle={FCME2_COURSE_SUBTITLE}
           sideImage={landingMarketingImage}
           sideHeading="FCME"
           sideText="Fondements, concepts, marketing et étude du marché"

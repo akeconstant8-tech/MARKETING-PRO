@@ -11,6 +11,7 @@ import { miChapters, MI_COURSE_SUBTITLE } from '../data/miCourse';
 import { marketingChapters, MARKETING_COURSE_SUBTITLE, MARKETING_COURSE_TITLE } from '../data/marketingCourse';
 import { marketing2Chapters, MARKETING2_COURSE_SUBTITLE } from '../data/marketing2Course';
 import { fcmeChapters, FCME_COURSE_SUBTITLE, FCME_COURSE_TITLE } from '../data/fcmeCourse';
+import { fcme2Chapters, FCME2_COURSE_SUBTITLE, FCME2_COURSE_TITLE } from '../data/fcme2Course';
 import landingMarketingImage from '../assets/images/landing/landing-marketing.jpg';
 import Button from '../components/Button';
 import StatCard from '../components/StatCard';
@@ -59,6 +60,7 @@ export default function Subjects() {
   const [miReaderIndex, setMiReaderIndex] = useState<number | null>(null);
   const [mktReaderIndex, setMktReaderIndex] = useState<number | null>(null);
   const [fcmeReaderIndex, setFcmeReaderIndex] = useState<number | null>(null);
+  const [fcme2ReaderIndex, setFcme2ReaderIndex] = useState<number | null>(null);
   const [mkt2ReaderIndex, setMkt2ReaderIndex] = useState<number | null>(null);
   const loading = loadingSubjects || loadingClasses || loadingFilieres;
 
@@ -577,6 +579,26 @@ export default function Subjects() {
                     </div>
                   </div>
                 ) : null}
+
+                {isFcme ? (
+                  <div className="subject-teaching">
+                    <div className="subject-teaching-header">
+                      <GraduationCap size={15} />
+                      <span>Mon enseignement — {FCME2_COURSE_TITLE} ({FCME2_COURSE_SUBTITLE})</span>
+                    </div>
+                    <div className="subject-teaching-grid">
+                      {fcme2Chapters.map((chapter, ci) => (
+                        <button
+                          key={chapter.id}
+                          className="subject-teaching-chip"
+                          onClick={() => setFcme2ReaderIndex(chapter.number - 1)}
+                        >
+                          {chapter.number === 8 ? 'Applications' : `Ch. ${ci + 1}`}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
               </TiltCard>
             );
           })}
@@ -633,6 +655,19 @@ export default function Subjects() {
           chapters={fcmeChapters}
           courseTitle="FCME"
           courseSubtitle={FCME_COURSE_SUBTITLE}
+          sideImage={landingMarketingImage}
+          sideHeading="FCME"
+          sideText="Fondements, concepts, marketing et étude du marché"
+        />
+      ) : null}
+
+      {fcme2ReaderIndex !== null ? (
+        <TeachingReader
+          startIndex={fcme2ReaderIndex}
+          onClose={() => setFcme2ReaderIndex(null)}
+          chapters={fcme2Chapters}
+          courseTitle="FCME"
+          courseSubtitle={FCME2_COURSE_SUBTITLE}
           sideImage={landingMarketingImage}
           sideHeading="FCME"
           sideText="Fondements, concepts, marketing et étude du marché"

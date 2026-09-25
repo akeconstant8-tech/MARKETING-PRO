@@ -24,6 +24,8 @@ import { marketing2Chapters, MARKETING2_COURSE_SUBTITLE, MARKETING2_COURSE_TITLE
 import { getMarketing2ChapterVisual } from '../data/marketing2ChapterVisuals';
 import { fcmeChapters, FCME_COURSE_SUBTITLE, FCME_COURSE_TITLE } from '../data/fcmeCourse';
 import { getFcmeChapterVisual } from '../data/fcmeChapterVisuals';
+import { fcme2Chapters, FCME2_COURSE_SUBTITLE, FCME2_COURSE_TITLE } from '../data/fcme2Course';
+import { getFcme2ChapterVisual } from '../data/fcme2ChapterVisuals';
 import landingMarketingImage from '../assets/images/landing/landing-marketing.jpg';
 import type { Course, CourseAttachment, Subject } from '../types';
 import './Courses.css';
@@ -40,6 +42,7 @@ export default function Courses() {
   const [miReaderIndex, setMiReaderIndex] = useState<number | null>(null);
   const [mktReaderIndex, setMktReaderIndex] = useState<number | null>(null);
   const [fcmeReaderIndex, setFcmeReaderIndex] = useState<number | null>(null);
+  const [fcme2ReaderIndex, setFcme2ReaderIndex] = useState<number | null>(null);
   const [mkt2ReaderIndex, setMkt2ReaderIndex] = useState<number | null>(null);
 
   const [showForm, setShowForm] = useState(false);
@@ -429,6 +432,29 @@ export default function Courses() {
         </div>
       </div>
 
+      <div className="courses-teaching-card">
+        <div className="courses-teaching-header">
+          <h3 className="courses-teaching-title">Mon enseignement — {FCME2_COURSE_TITLE}</h3>
+          <p className="courses-teaching-subtitle">{FCME2_COURSE_SUBTITLE}</p>
+        </div>
+        <div className="courses-teaching-grid">
+          {fcme2Chapters.map((chapter, i) => (
+            <ChapterCard
+              key={chapter.id}
+              chapter={chapter}
+              visual={getFcme2ChapterVisual(chapter.number)}
+              label={chapter.number === 8 ? 'Applications' : `Chapitre ${chapter.number}`}
+              viewed={viewed.has(chapter.id)}
+              index={i}
+              onOpen={() => {
+                markViewed(chapter.id);
+                setFcme2ReaderIndex(chapter.number - 1);
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
       <h3 className="courses-section-heading">Mes cours</h3>
 
       {loading ? (
@@ -596,6 +622,19 @@ export default function Courses() {
           chapters={fcmeChapters}
           courseTitle={FCME_COURSE_TITLE}
           courseSubtitle={FCME_COURSE_SUBTITLE}
+          sideImage={landingMarketingImage}
+          sideHeading="FCME"
+          sideText="Fondements, concepts, marketing et étude du marché"
+        />
+      ) : null}
+
+      {fcme2ReaderIndex !== null ? (
+        <TeachingReader
+          startIndex={fcme2ReaderIndex}
+          onClose={() => setFcme2ReaderIndex(null)}
+          chapters={fcme2Chapters}
+          courseTitle={FCME2_COURSE_TITLE}
+          courseSubtitle={FCME2_COURSE_SUBTITLE}
           sideImage={landingMarketingImage}
           sideHeading="FCME"
           sideText="Fondements, concepts, marketing et étude du marché"
