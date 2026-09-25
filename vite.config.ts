@@ -4,6 +4,10 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Production : aucune source map publiée (elles exposeraient le code source
+  // d'origine). C'est la valeur par défaut de Vite, fixée ici pour qu'un
+  // changement de défaut ne l'active pas sans qu'on le voie.
+  build: { sourcemap: false },
   plugins: [
     react(),
     VitePWA({

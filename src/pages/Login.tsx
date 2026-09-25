@@ -28,6 +28,7 @@ import ShinyText from '../components/effects/ShinyText';
 import { AnimatedList, AnimatedListItem } from '../components/effects/AnimatedList';
 import { resetPassword, signInWithEmail, signInWithGoogle } from '../services/authService';
 import { useToast } from '../context/ToastContext';
+import { authErrorMessage } from '../utils/authErrors';
 import { useTheme } from '../hooks/useTheme';
 import imgCours from '../assets/images/landing/landing-cours.jpg';
 import imgMarketing from '../assets/images/landing/landing-marketing.jpg';
@@ -90,7 +91,7 @@ export default function Login() {
       showToast('success', 'Connexion réussie.');
       navigate('/');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Connexion impossible.');
+      setError(authErrorMessage(err, 'Connexion impossible.'));
     } finally {
       setLoading(false);
     }
@@ -104,7 +105,7 @@ export default function Login() {
       showToast('success', 'Connexion réussie.');
       navigate('/');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Connexion Google impossible.');
+      setError(authErrorMessage(err, 'Connexion Google impossible.'));
     } finally {
       setGoogleLoading(false);
     }
@@ -126,7 +127,7 @@ export default function Login() {
       setResetMessage('Email envoyé. Vérifiez votre boîte mail.');
     } catch (err) {
       setResetSuccess(false);
-      setResetMessage(err instanceof Error ? err.message : 'Envoi impossible.');
+      setResetMessage(authErrorMessage(err, 'Envoi impossible.'));
     } finally {
       setResetSending(false);
     }

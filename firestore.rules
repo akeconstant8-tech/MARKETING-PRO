@@ -15,52 +15,70 @@ service cloud.firestore {
       return request.auth != null && resource.data.teacherId == request.auth.uid;
     }
 
+    // A la mise a jour, teacherId doit rester celui du proprietaire : sans cette
+    // verification, un enseignant pourrait reaffecter un de ses documents a un
+    // autre uid et injecter des donnees dans le compte d'un autre enseignant.
+    function isOwnerOnUpdate() {
+      return isOwner() && request.resource.data.teacherId == resource.data.teacherId;
+    }
+
     function isOwnerOnCreate() {
       return request.auth != null && request.resource.data.teacherId == request.auth.uid;
     }
 
     match /etablissements/{id} {
-      allow read, update, delete: if isOwner();
+      allow read, delete: if isOwner();
+      allow update: if isOwnerOnUpdate();
       allow create: if isOwnerOnCreate();
     }
     match /students/{id} {
-      allow read, update, delete: if isOwner();
+      allow read, delete: if isOwner();
+      allow update: if isOwnerOnUpdate();
       allow create: if isOwnerOnCreate();
     }
     match /classes/{id} {
-      allow read, update, delete: if isOwner();
+      allow read, delete: if isOwner();
+      allow update: if isOwnerOnUpdate();
       allow create: if isOwnerOnCreate();
     }
     match /filieres/{id} {
-      allow read, update, delete: if isOwner();
+      allow read, delete: if isOwner();
+      allow update: if isOwnerOnUpdate();
       allow create: if isOwnerOnCreate();
     }
     match /subjects/{id} {
-      allow read, update, delete: if isOwner();
+      allow read, delete: if isOwner();
+      allow update: if isOwnerOnUpdate();
       allow create: if isOwnerOnCreate();
     }
     match /courses/{id} {
-      allow read, update, delete: if isOwner();
+      allow read, delete: if isOwner();
+      allow update: if isOwnerOnUpdate();
       allow create: if isOwnerOnCreate();
     }
     match /evaluations/{id} {
-      allow read, update, delete: if isOwner();
+      allow read, delete: if isOwner();
+      allow update: if isOwnerOnUpdate();
       allow create: if isOwnerOnCreate();
     }
     match /grades/{id} {
-      allow read, update, delete: if isOwner();
+      allow read, delete: if isOwner();
+      allow update: if isOwnerOnUpdate();
       allow create: if isOwnerOnCreate();
     }
     match /scheduleEntries/{id} {
-      allow read, update, delete: if isOwner();
+      allow read, delete: if isOwner();
+      allow update: if isOwnerOnUpdate();
       allow create: if isOwnerOnCreate();
     }
     match /calendarEvents/{id} {
-      allow read, update, delete: if isOwner();
+      allow read, delete: if isOwner();
+      allow update: if isOwnerOnUpdate();
       allow create: if isOwnerOnCreate();
     }
     match /contacts/{id} {
-      allow read, update, delete: if isOwner();
+      allow read, delete: if isOwner();
+      allow update: if isOwnerOnUpdate();
       allow create: if isOwnerOnCreate();
     }
   }

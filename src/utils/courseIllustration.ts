@@ -7,6 +7,8 @@
  * donne toujours la même illustration.
  */
 
+import { TtlCache } from './ttlCache';
+
 type Motif =
   | 'cross' | 'book' | 'dove' | 'flame' | 'pentecost' | 'baptism' | 'repentance' | 'menorah'
   | 'altar' | 'hands' | 'scroll' | 'shield' | 'heart' | 'crown' | 'wheat'
@@ -191,7 +193,9 @@ export function pickIllustration(title: string): { motif: Motif; tone: string } 
   return { motif: 'book', tone: TONE_ORDER[hash(t) % TONE_ORDER.length] };
 }
 
-const cache = new Map<string, string>();
+// Borné (les combinaisons motif/ton sont peu nombreuses) et expirant : une
+// illustration expirée est simplement régénérée à partir du titre.
+const cache = new TtlCache<string, string>(200, 30 * 60 * 1000);
 
 /** Renvoie l'image d'un cours : celle qui existe déjà si `existingImage` est
  * fourni (jamais modifiée), sinon une illustration SVG (data URI) générée à

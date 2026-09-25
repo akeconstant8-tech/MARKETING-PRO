@@ -5,6 +5,7 @@ import Logo from '../components/Logo';
 import Button from '../components/Button';
 import { signInWithGoogle, signUpWithEmail } from '../services/authService';
 import { useToast } from '../context/ToastContext';
+import { authErrorMessage } from '../utils/authErrors';
 import './Auth.css';
 
 export default function Register() {
@@ -35,7 +36,7 @@ export default function Register() {
       showToast('success', 'Compte créé avec succès. Bienvenue !');
       navigate('/');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Inscription impossible.');
+      setError(authErrorMessage(err, 'Inscription impossible.'));
     } finally {
       setLoading(false);
     }
@@ -49,7 +50,7 @@ export default function Register() {
       showToast('success', 'Compte créé avec succès. Bienvenue !');
       navigate('/');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Connexion Google impossible.');
+      setError(authErrorMessage(err, 'Connexion Google impossible.'));
     } finally {
       setGoogleLoading(false);
     }
